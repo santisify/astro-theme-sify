@@ -27,12 +27,12 @@ function formatDate(d: Date) {
         </svg>
         系列：{series}
       </h2>
-      <ul class="space-y-1">
+      <ul class="space-y-0.5">
         {seriesPosts.map((post) => (
           <li>
             <a
               href={`/post/${post.id}`}
-              class={`flex items-center gap-2 text-xs py-1.5 px-2 rounded-lg transition-colors ${
+              class={`flex items-center gap-2 text-sm py-2.5 px-3 min-h-[44px] rounded-lg transition-colors ${
                 post.id === currentSlug
                   ? 'bg-primary/10 text-primary font-medium'
                   : 'text-gray-500 dark:text-gray-400 hover:text-primary hover:bg-primary/5'
@@ -40,7 +40,7 @@ function formatDate(d: Date) {
             >
               <span class="w-1.5 h-1.5 rounded-full shrink-0 bg-primary/40" />
               <span class="flex-1 truncate">{post.data.title}</span>
-              <span class="text-gray-400 dark:text-gray-500 shrink-0">{formatDate(post.data.date)}</span>
+              <span class="text-gray-400 dark:text-gray-500 shrink-0 text-xs">{formatDate(post.data.date)}</span>
             </a>
           </li>
         ))}

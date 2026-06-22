@@ -1,7 +1,7 @@
 ---
-import { SITE_TITLE, NAV_ITEMS } from '../consts';
-import Search from './Search.astro';
-import LanguageSwitcher from './LanguageSwitcher.astro';
+import { SITE_TITLE, NAV_ITEMS } from '@/consts';
+import Search from '@/components/Search.astro';
+import LanguageSwitcher from '@/components/LanguageSwitcher.astro';
 
 function isArticleLabel(item: typeof NAV_ITEMS[number]) {
   return item.label === '文章';
@@ -100,24 +100,24 @@ const navTranslations: Record<string, { zh: string; en: string }> = {
     </div>
 
     <div id="mobile-menu" class="hidden md:hidden pb-4">
-      <nav class="flex flex-col gap-1">
+      <nav class="flex flex-col gap-0.5">
         {NAV_ITEMS.map((item) => (
           <div>
             <a
               href={isArticleLabel(item) ? undefined : item.href}
-              class={`block px-3 py-2 text-sm font-medium rounded-lg text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5 transition-colors ${isArticleLabel(item) ? 'cursor-pointer' : ''}`}
+              class={`flex items-center px-3 py-3 text-sm font-medium rounded-lg text-gray-600 dark:text-gray-300 hover:text-primary hover:bg-primary/5 transition-colors min-h-[44px] ${isArticleLabel(item) ? 'cursor-pointer' : ''}`}
             >
               <span class="nav-text" data-zh={item.label} data-en={navTranslations[item.label]?.en || item.label}>{item.label}</span>
             </a>
             {isArticleLabel(item) && (
               <div class="ml-4 space-y-0">
-                <a href="/categories" class="block px-3 py-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+                <a href="/categories" class="flex items-center px-3 py-2.5 text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors min-h-[44px]">
                   <span class="nav-text" data-zh="分类" data-en="Categories">分类</span>
                 </a>
-                <a href="/tags" class="block px-3 py-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+                <a href="/tags" class="flex items-center px-3 py-2.5 text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors min-h-[44px]">
                   <span class="nav-text" data-zh="标签" data-en="Tags">标签</span>
                 </a>
-                <a href="/archives" class="block px-3 py-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+                <a href="/archives" class="flex items-center px-3 py-2.5 text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors min-h-[44px]">
                   <span class="nav-text" data-zh="归档" data-en="Archives">归档</span>
                 </a>
               </div>

@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
-import BlogLayout from '../../layouts/BlogLayout.astro';
-import PostList from '../../components/PostList.astro';
-import { resolveCover } from '../_imageStore';
+import BlogLayout from '@/layouts/BlogLayout.astro';
+import PostList from '@/components/PostList.astro';
+import { resolveCover } from '@/pages/_imageStore';
 
 const allPosts = await getCollection('blog');
 const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());

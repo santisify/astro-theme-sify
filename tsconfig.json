@@ -1,5 +1,22 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist"],
+   "compilerOptions": {
+    // Basic
+    "allowJs": true,
+    // Building for a library
+    "declaration": true,
+    // Code runs in the DOM
+    "lib": ["es2022", "dom", "dom.iterable"],
+    // Type Imports
+    "verbatimModuleSyntax": true,
+    // Others
+    "baseUrl": ".",
+    "strictNullChecks": true,
+    // Paths
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
 }

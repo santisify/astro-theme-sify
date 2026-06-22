@@ -1,6 +1,6 @@
 ---
 title: 从零搭建博客
-description: 详细介绍如何基于本主题从零搭建个人博客，包括安装、配置、部署全流程。
+description: 详细介绍如何基于 Sify Blog 主题从零搭建个人博客，包括安装、配置、编写文章和部署全流程。
 date: 2024-05-10
 tags: [教程, 入门]
 category: 教程
@@ -19,49 +19,37 @@ curl -fsSL https://bun.sh/install | bash
 ## 创建项目
 
 ```bash
-# 克隆或初始化项目
+# 克隆项目
 git clone <your-repo-url> my-blog
 cd my-blog
 bun install
 ```
 
-### 本地开发
+### 常用命令
 
 ```bash
-bun dev
-```
-
-浏览器打开 `http://localhost:4321`，支持热重载。
-
-### 构建生产版本
-
-```bash
-bun run build
-```
-
-### 预览生产构建
-
-```bash
-bun preview
+bun dev          # 启动开发服务器 (localhost:4321)
+bun run build    # 构建生产版本
+bun preview      # 预览生产构建
 ```
 
 ## 配置站点
 
-编辑 `src/consts.ts` 文件，修改以下配置：
+编辑 `src/consts.ts`，修改站点基本信息：
 
 ```typescript
-// 站点基本信息
 export const SITE_TITLE = 'My Blog';
 export const SITE_DESCRIPTION = '这是我的个人博客';
 export const SITE_AUTHOR = 'Your Name';
 export const SITE_URL = 'https://example.com';
 export const SITE_AVATAR = '/avatar.png';
 export const SITE_COVER = '/cover.jpg';
-
-// 每页文章数
 export const PAGE_SIZE = 10;
+```
 
-// 导航菜单
+### 导航菜单
+
+```typescript
 export const NAV_ITEMS = [
   { label: '首页', href: '/' },
   { label: '周刊', href: '/weekly' },
@@ -69,8 +57,11 @@ export const NAV_ITEMS = [
   { label: '友链', href: '/friends' },
   { label: '关于', href: '/about' },
 ];
+```
 
-// 社交链接
+### 社交链接
+
+```typescript
 export const SOCIAL_LINKS = [
   { name: 'GitHub', href: 'https://github.com/yourname', icon: 'github' },
   { name: 'RSS', href: '/rss.xml', icon: 'rss' },
@@ -81,18 +72,19 @@ export const SOCIAL_LINKS = [
 
 在 `src/content/blog/` 目录下创建 `.md` 或 `.mdx` 文件。
 
-### 文章 Frontmatter
+### Frontmatter 字段
 
 ```yaml
 ---
-title: 文章标题
-description: 文章描述
-date: 2024-06-01
-tags: [标签1, 标签2]
-category: 分类
-cover: https://example.com/cover.jpg  # 或 ./images/cover.webp
-pinned: false   # 是否置顶
-draft: false    # 是否为草稿
+title: 文章标题          # 必填
+description: 文章描述    # 可选
+date: 2024-06-01         # 必填
+tags: [标签1, 标签2]     # 可选，默认 []
+category: 教程           # 可选
+cover: https://example.com/cover.jpg  # 可选，支持远程 URL 或本地路径
+series: 系列名称         # 可选，同系列文章自动归组
+pinned: false            # 是否置顶
+draft: false             # 是否为草稿（构建时过滤）
 ---
 ```
 
@@ -102,10 +94,51 @@ draft: false    # 是否为草稿
 
 ```
 src/content/blog/
-├── post-slug.md              # 单文件
-└── post-slug/
-    ├── index.md              # 目录形式
-    └── cover.webp            # 本地图片
+├── my-post.md              # 单文件形式
+└── my-post/
+    ├── index.md            # 目录形式（推荐，可存放本地图片）
+    ├── cover.webp          # 封面图
+    └── images/             # 文章内图片
+```
+
+### 本地图片
+
+使用相对路径引用本地图片：
+
+```yaml
+cover: ./cover.webp
+```
+
+图片路径会通过 `src/pages/_imageStore.ts` 自动解析。
+
+## 配置评论
+
+在 `src/components/waline/Comment.astro` 中配置 Waline 服务端地址：
+
+```typescript
+const serverURL = 'https://your-waline-server.vercel.app';
+```
+
+## 配置友链
+
+编辑 `public/links.json`，添加好友链接：
+
+```json
+{
+  "friends": [
+    {
+      "id_name": "cf-links",
+      "data": [
+        {
+          "name": "好友名称",
+          "avatar": "https://example.com/avatar.png",
+          "desc": "好友简介",
+          "link": "https://example.com"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 ## 部署
@@ -113,7 +146,6 @@ src/content/blog/
 ### Vercel
 
 ```bash
-# 一键部署
 vercel
 ```
 
@@ -124,7 +156,7 @@ vercel
 
 ### 其他平台
 
-任何支持静态文件托管的平台可直接部署 `dist/` 目录。
+任何支持静态文件托管的平台，直接部署 `dist/` 目录即可。
 
 ## 自定义主题
 

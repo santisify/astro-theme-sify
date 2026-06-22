@@ -1,10 +1,10 @@
 ---
-import BaseLayout from './BaseLayout.astro';
-import ReadingProgress from '../components/ReadingProgress.astro';
-import TableOfContents from '../components/TableOfContents.astro';
-import ShareButtons from '../components/ShareButtons.astro';
-import SeriesList from '../components/SeriesList.astro';
-import Comment from '../components/waline/Comment.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ReadingProgress from '@/components/ReadingProgress.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
+import ShareButtons from '@/components/ShareButtons.astro';
+import SeriesList from '@/components/SeriesList.astro';
+import Comment from '@/components/waline/Comment.astro';
 interface MarkdownHeading {
   depth: number;
   slug: string;
@@ -21,6 +21,7 @@ interface Props {
 }
 
 const {title, description, headings, cover, series, currentSlug} = Astro.props;
+const hasHeadings = headings && headings.length > 0;
 ---
 
 <BaseLayout title={title} description={description} ogType="article" image={cover}>
@@ -52,7 +53,7 @@ const {title, description, headings, cover, series, currentSlug} = Astro.props;
         </div>
       </div>
       {
-        headings && headings.length > 0 && (
+        hasHeadings && (
           <aside class="w-full lg:w-60 shrink-0 order-2">
             <div class="sticky top-24 space-y-4">
               <TableOfContents headings={headings}/>
@@ -64,7 +65,7 @@ const {title, description, headings, cover, series, currentSlug} = Astro.props;
         )
       }
       {
-        (!headings || headings.length === 0) && series && currentSlug && (
+        (!hasHeadings) && series && currentSlug && (
           <aside class="w-full lg:w-60 shrink-0 order-2">
             <div class="sticky top-24">
               <SeriesList series={series} currentSlug={currentSlug} />
@@ -74,4 +75,95 @@ const {title, description, headings, cover, series, currentSlug} = Astro.props;
       }
     </div>
   </div>
+
+  {
+    hasHeadings && (
+      <>
+        <button
+          id="mobile-toc-trigger"
+          class="lg:hidden fixed bottom-20 left-4 z-40 flex items-center gap-1.5 px-3 py-2.5 bg-white dark:bg-[var(--color-card-dark)] text-primary rounded-full shadow-lg border border-gray-100 dark:border-gray-700 text-sm font-medium transition-all hover:shadow-xl"
+          aria-label="打开目录"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          目录
+        </button>
+
+        <div
+          id="mobile-toc-drawer"
+          class="lg:hidden fixed inset-0 z-50 pointer-events-none"
+          aria-hidden="true"
+          inert
+        >
+          <div id="mobile-toc-backdrop" class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300"></div>
+          <div id="mobile-toc-panel" class="absolute bottom-0 left-0 right-0 max-h-[70vh] bg-white dark:bg-[var(--color-bg-dark)] rounded-t-2xl shadow-2xl transform translate-y-full transition-transform duration-300 overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between px-5 py-3 border-b border-gray-100 dark:border-gray-700 shrink-0">
+              <h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">目录</h2>
+              <button
+                id="mobile-toc-close"
+                class="p-2 -mr-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                aria-label="关闭目录"
+              >
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="overflow-y-auto flex-1 p-4">
+              <TableOfContents headings={headings} mobile={true}/>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
 </BaseLayout>
+
+<script is:inline>
+  (function() {
+    function init() {
+      var trigger = document.getElementById('mobile-toc-trigger');
+      var drawer = document.getElementById('mobile-toc-drawer');
+      var backdrop = document.getElementById('mobile-toc-backdrop');
+      var panel = document.getElementById('mobile-toc-panel');
+      var closeBtn = document.getElementById('mobile-toc-close');
+      if (!trigger || !drawer || !backdrop || !panel) return;
+
+      function openDrawer() {
+        drawer.removeAttribute('inert');
+        drawer.setAttribute('aria-hidden', 'false');
+        drawer.classList.remove('pointer-events-none');
+        backdrop.classList.remove('opacity-0');
+        backdrop.classList.add('opacity-100');
+        panel.classList.remove('translate-y-full');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0');
+        panel.classList.add('translate-y-full');
+        setTimeout(function() {
+          drawer.setAttribute('inert', '');
+          drawer.setAttribute('aria-hidden', 'true');
+          drawer.classList.add('pointer-events-none');
+          document.body.style.overflow = '';
+        }, 300);
+      }
+
+      trigger.addEventListener('click', openDrawer);
+      closeBtn?.addEventListener('click', closeDrawer);
+      backdrop.addEventListener('click', closeDrawer);
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false') {
+          closeDrawer();
+        }
+      });
+    }
+
+    init();
+    document.addEventListener('astro:after-swap', init);
+  })();
+</script>

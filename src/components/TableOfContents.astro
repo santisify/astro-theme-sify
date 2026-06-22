@@ -7,28 +7,36 @@ interface Heading {
 
 interface Props {
   headings: Heading[];
+  mobile?: boolean;
 }
 
-const { headings } = Astro.props;
+const { headings, mobile = false } = Astro.props;
 
 const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
 {
   filtered.length > 0 && (
-    <nav class="bg-white dark:bg-[var(--color-card-dark)] rounded-2xl shadow-sm p-5">
-      <h2 class="text-sm font-semibold mb-3 text-gray-900 dark:text-gray-100">
-        目录
-      </h2>
-      <ul class="space-y-1">
+    <nav class:list={[
+      'bg-white dark:bg-[var(--color-card-dark)] rounded-2xl shadow-sm p-5',
+      !mobile && 'hidden lg:block',
+    ]}>
+      {!mobile && (
+        <h2 class="text-sm font-semibold mb-3 text-gray-900 dark:text-gray-100">
+          目录
+        </h2>
+      )}
+      <ul class="space-y-0.5">
         {filtered.map((heading) => (
           <li>
             <a
               href={`#${heading.slug}`}
-              id={`toc-${heading.slug}`}
-              class={`toc-link block text-xs py-1 transition-colors hover:text-primary text-gray-500 dark:text-gray-400 ${
-                heading.depth === 3 ? 'pl-4' : ''
-              }`}
+              id={mobile ? undefined : `toc-${heading.slug}`}
+              class:list={[
+                'toc-link block transition-colors hover:text-primary text-gray-500 dark:text-gray-400 rounded-lg',
+                mobile ? 'text-sm py-2.5 px-3 min-h-[44px] flex items-center' : 'text-xs py-1.5 px-2',
+                heading.depth === 3 && (mobile ? 'pl-7' : 'pl-4'),
+              ]}
             >
               {heading.text}
             </a>
@@ -39,6 +47,49 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
   )
 }
 
+<script is:inline>
+  (function() {
+    function init() {
+      var links = document.querySelectorAll('.toc-link');
+      if (links.length === 0) return;
+
+      var headingElements = [];
+      links.forEach(function(link) {
+        var id = link.id.replace('toc-', '');
+        if (!id) return;
+        var heading = document.getElementById(id);
+        if (heading) headingElements.push({ id: id, el: heading, link: link });
+      });
+
+      if (headingElements.length === 0) return;
+
+      function updateHighlight() {
+        var scrollTop = window.scrollY + 80;
+        var current = headingElements[0];
+
+        for (var i = 0; i < headingElements.length; i++) {
+          if (headingElements[i].el.offsetTop <= scrollTop) {
+            current = headingElements[i];
+          }
+        }
+
+        links.forEach(function(link) {
+          link.classList.remove('text-primary', 'font-medium', 'bg-primary/5');
+        });
+
+        if (current) {
+          current.link.classList.add('text-primary', 'font-medium', 'bg-primary/5');
+        }
+      }
+
+      window.addEventListener('scroll', updateHighlight, { passive: true });
+      updateHighlight();
+    }
+
+    init();
+    document.addEventListener('astro:after-swap', init);
+  })();
+</script>
 <script is:inline>
   (function() {
     function init() {

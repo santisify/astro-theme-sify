@@ -1,8 +1,8 @@
 ---
 import { getCollection, getEntry, render } from 'astro:content';
-import PostLayout from '../../layouts/PostLayout.astro';
-import { getReadingTime, getWordCount } from '../../utils/readingTime';
-import { resolveCover } from '../_imageStore';
+import PostLayout from '@/layouts/PostLayout.astro';
+import { getReadingTime, getWordCount } from '@/utils/readingTime';
+import { resolveCover } from '@/pages/_imageStore';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');

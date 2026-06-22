@@ -1,6 +1,5 @@
 ---
 import '@waline/client/style';
-
 interface Props {
   class?: string;
 }
@@ -14,6 +13,7 @@ const { class: className } = Astro.props;
 </div>
 
 <script>
+  import { walineServer } from '@/consts';
   import { init as walineInit } from '@waline/client';
 
   const walineMounted = { current: false };
@@ -24,7 +24,7 @@ const { class: className } = Astro.props;
     walineMounted.current = true;
     walineInit({
       el: '#waline',
-      serverURL: '',  //waline服务链接
+      serverURL: walineServer,
       lang: 'zh-CN',
       dark: 'auto',
       meta: ['nick', 'mail', 'link'],

@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import BlogLayout from '../../layouts/BlogLayout.astro';
-import PostList from '../../components/PostList.astro';
-import Pagination from '../../components/Pagination.astro';
-import { PAGE_SIZE } from '../../consts';
-import { resolveCover } from '../_imageStore';
+import BlogLayout from '@/layouts/BlogLayout.astro';
+import PostList from '@/components/PostList.astro';
+import Pagination from '@/components/Pagination.astro';
+import { PAGE_SIZE } from '@/consts';
+import { resolveCover } from '@/pages/_imageStore';
 
 export async function getStaticPaths() {
   const allPosts = await getCollection('blog');

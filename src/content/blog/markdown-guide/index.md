@@ -2,12 +2,12 @@
 title: Markdown 语法指南
 description: 本主题支持的全部 Markdown 语法示例，包括标题、列表、表格、代码块、引用、图片等。
 date: 2024-05-20
-tags: [Markdown, CSS]
+tags: [Markdown, 教程]
 category: 教程
 cover: https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200
 ---
 
-## 标题层级
+## 标题
 
 # H1 一级标题
 ## H2 二级标题
@@ -110,6 +110,8 @@ for file in *.md; do
 done
 ```
 
+代码块支持语言标签显示、一键复制和行号。复制按钮在右上角，点击后显示 ✓ 表示已复制。
+
 ## 分割线
 
 ---
@@ -127,5 +129,5 @@ done
 ## HTML 嵌入
 
 <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 text-sm">
-  🔔 提示：本主题支持在 Markdown 中嵌入 HTML 标签。
+  提示：本主题支持在 Markdown 中嵌入 HTML 标签。
 </div>

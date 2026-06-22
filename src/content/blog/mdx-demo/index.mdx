@@ -9,7 +9,7 @@ cover: https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200
 
 ## MDX 是什么
 
-MDX 让你在 Markdown 中直接使用 JSX 组件。
+MDX 让你在 Markdown 中直接使用 JSX 组件。本主题完全支持 `.mdx` 格式的文章。
 
 ### 外链卡片
 
@@ -28,9 +28,21 @@ import LinkCard from '../../../components/LinkCard.astro';
   description="为 Web 设计的快速、易用数学排版库，完整支持 LaTeX 语法。"
 />
 
+### 自定义组件
+
+在 `src/components/` 下创建 `.astro` 组件，然后在 MDX 文件中 `import` 并使用：
+
+```jsx
+import MyComponent from '../components/MyComponent.astro';
+
+<MyComponent prop="value" />
+```
+
+这种方式让文章内容具备无限扩展能力。
+
 ## 数学公式
 
-本主题使用 **KaTeX** 渲染数学公式，支持行内和块级公式。
+本主题使用 **KaTeX** 渲染数学公式，支持行内和块级公式。行内公式用 `$...$`，块级公式用 `$$...$$`。
 
 ### 行内公式
 
@@ -91,11 +103,14 @@ $$
 \prod_{i=1}^{n} x_i = x_1 \cdot x_2 \cdot \ldots \cdot x_n
 $$
 
-## 自定义组件
+### 极限
 
-除 LinkCard 外，你还可以创建任意自定义组件并在 MDX 中使用：
+$$
+\lim_{x \to 0} \frac{\sin x}{x} = 1
+$$
 
-1. 在 `src/components/` 下创建 `.astro` 组件
-2. 在 MDX 文件中 `import` 并使用
+### 导数
 
-这种方式让文章内容具备无限扩展能力。
+$$
+f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+$$
