@@ -30,7 +30,7 @@ function formatDate(d: Date) {
   return d.toISOString().split('T')[0];
 }
 ---
-<PostLayout title={post.data.title} description={post.data.description} headings={headings} cover={coverSrc}>
+<PostLayout title={post.data.title} description={post.data.description} headings={headings} cover={coverSrc} series={post.data.series} currentSlug={post.id}>
   <header class="mb-8">
     {post.data.category && (
       <a

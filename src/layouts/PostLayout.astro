@@ -1,6 +1,9 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import ReadingProgress from '../components/ReadingProgress.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import SeriesList from '../components/SeriesList.astro';
 import Comment from '../components/waline/Comment.astro';
 interface MarkdownHeading {
   depth: number;
@@ -13,12 +16,15 @@ interface Props {
   description?: string;
   headings: MarkdownHeading[];
   cover?: string;
+  series?: string;
+  currentSlug?: string;
 }
 
-const {title, description, headings, cover} = Astro.props;
+const {title, description, headings, cover, series, currentSlug} = Astro.props;
 ---
 
 <BaseLayout title={title} description={description} ogType="article" image={cover}>
+  <ReadingProgress />
   {
     cover && (
       <div class="relative w-full h-64 sm:h-80 lg:h-96 overflow-hidden -mt-16 mb-8">
@@ -37,8 +43,20 @@ const {title, description, headings, cover} = Astro.props;
       {
         headings && headings.length > 0 && (
           <aside class="w-full lg:w-56 shrink-0 order-1">
-            <div class="sticky top-24">
+            <div class="sticky top-24 space-y-4">
               <TableOfContents headings={headings}/>
+              {series && currentSlug && (
+                <SeriesList series={series} currentSlug={currentSlug} />
+              )}
+            </div>
+          </aside>
+        )
+      }
+      {
+        (!headings || headings.length === 0) && series && currentSlug && (
+          <aside class="w-full lg:w-56 shrink-0 order-1">
+            <div class="sticky top-24">
+              <SeriesList series={series} currentSlug={currentSlug} />
             </div>
           </aside>
         )
@@ -47,6 +65,9 @@ const {title, description, headings, cover} = Astro.props;
         <article class="prose max-w-none">
           <slot/>
         </article>
+        <div class="mt-8">
+          <ShareButtons title={title} />
+        </div>
         <div class="mt-10 pt-8 border-t border-gray-100 dark:border-gray-800">
           <Comment />
         </div>

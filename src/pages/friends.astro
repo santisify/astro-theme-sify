@@ -98,17 +98,21 @@ const articles = data?.article_data || [];
                 href={friend.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="card-hover bg-white dark:bg-[var(--color-card-dark)] rounded-xl shadow-sm p-4 flex flex-col items-center text-center group"
+                class="card-hover bg-white dark:bg-[var(--color-card-dark)] rounded-xl shadow-sm p-4 flex flex-col items-center text-center group friend-card"
+                data-url={friend.link}
               >
-                <img
-                  src={friend.avatar}
-                  alt={friend.name}
-                  class="w-14 h-14 rounded-full object-cover mb-2 ring-2 ring-primary/10 group-hover:ring-primary/30 transition-all"
-                  loading="lazy"
-                  width="56"
-                  height="56"
-                  onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 56 56%22><rect fill=%22%23e9536a%22 width=%2256%22 height=%2256%22 opacity=%22.2%22/><circle fill=%22%23e9536a%22 cx=%2228%22 cy=%2221%22 r=%2211%22/><ellipse fill=%22%23e9536a%22 cx=%2228%22 cy=%2249%22 rx=%2217%22 ry=%2214%22/></svg>'"
-                />
+                <div class="relative">
+                  <img
+                    src={friend.avatar}
+                    alt={friend.name}
+                    class="w-14 h-14 rounded-full object-cover mb-2 ring-2 ring-primary/10 group-hover:ring-primary/30 transition-all"
+                    loading="lazy"
+                    width="56"
+                    height="56"
+                    onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 56 56%22><rect fill=%22%23e9536a%22 width=%2256%22 height=%2256%22 opacity=%22.2%22/><circle fill=%22%23e9536a%22 cx=%2228%22 cy=%2221%22 r=%2211%22/><ellipse fill=%22%23e9536a%22 cx=%2228%22 cy=%2249%22 rx=%2217%22 ry=%2214%22/></svg>'"
+                  />
+                  <span class="friend-status absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[var(--color-card-dark)] bg-gray-300" />
+                </div>
                 <span class="text-sm font-medium group-hover:text-primary transition-colors">
                   {friend.name}
                 </span>
@@ -250,3 +254,35 @@ const articles = data?.article_data || [];
     </div>
   </div>
 </BaseLayout>
+
+<script is:inline>
+  (function() {
+    function init() {
+      var cards = document.querySelectorAll('.friend-card');
+      var urls = [];
+      cards.forEach(function(card) {
+        var url = card.getAttribute('data-url');
+        if (url) urls.push(url);
+      });
+
+      urls.forEach(function(url) {
+        var card = document.querySelector('.friend-card[data-url="' + url + '"]');
+        var statusDot = card?.querySelector('.friend-status');
+        if (!statusDot) return;
+
+        fetch(url, { method: 'HEAD', mode: 'no-cors', signal: AbortSignal.timeout(5000) })
+          .then(function() {
+            statusDot.classList.remove('bg-gray-300');
+            statusDot.classList.add('bg-green-500');
+          })
+          .catch(function() {
+            statusDot.classList.remove('bg-gray-300');
+            statusDot.classList.add('bg-red-500');
+          });
+      });
+    }
+
+    init();
+    document.addEventListener('astro:after-swap', init);
+  })();
+</script>

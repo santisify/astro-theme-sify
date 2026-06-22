@@ -62,7 +62,7 @@ const {
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col">
-    <ClientRouter />
+    <ClientRouter prefetch={{ limit: 0 }} />
     <Header />
     <main class="flex-1">
       <slot />
