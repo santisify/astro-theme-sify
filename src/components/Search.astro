@@ -14,6 +14,7 @@
           autocomplete="off"
         />
         <button id="search-close" class="flex items-center justify-center w-11 h-11 -mr-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" aria-label="关闭搜索">
+          <kbd class="text-[10px] font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded mr-1">esc</kbd>
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
@@ -148,7 +149,25 @@
     search((e.target as HTMLInputElement).value);
   }
 
+  function handleKeydown(e: KeyboardEvent) {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      const modal = document.getElementById('search-modal');
+      if (modal?.classList.contains('hidden')) {
+        openSearch();
+      } else {
+        closeSearch();
+      }
+    }
+    if (e.key === 'Escape') {
+      closeSearch();
+    }
+  }
+
   function setup() {
+    document.removeEventListener('keydown', handleKeydown);
+    document.addEventListener('keydown', handleKeydown);
+
     const input = document.getElementById('search-input') as HTMLInputElement;
     if (input) {
       input.removeEventListener('input', onInput);
