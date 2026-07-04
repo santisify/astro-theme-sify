@@ -4,6 +4,35 @@
       "id_name": "cf-links",
       "desc": "Common links included in circle friends",
       "link_list": [
+        {
+          "name": "Pinpe",
+          "link": "https://pinpe.top",
+          "avatar": "https://pinpe.top/head.jpg",
+          "intro": "一个属于自己的云朵。"
+        },
+        {
+          "name": "santisify",
+          "link": "https://santisify.top",
+          "avatar": "https://cn.cravatar.com/avatar/737CF21C04FCD75BADF35BE0A797DE8A?s=200",
+          "intro": "to simplify technology to its purest, most powerful form."
+        },
+        {
+          "name": "清羽飞扬",
+          "link": "https://blog.liushen.fun/",
+          "avatar": "https://blog.liushen.fun/info/avatar.ico",
+          "intro": "柳影曳曳，清酒孤灯，扬笔撒墨，心境如霜"
+        },{
+          "name": "朽丘秋雨",
+          "link": "https://koxiuqiu.cn",
+          "intro" : "一定会和喜欢的人在夏日夜晚牵手慢步",
+          "avatar": "https://koxiuqiu.cn/img/avatar/xiaokeb.png"
+        },
+        {
+          "name":"韩小韩博客",
+          "link": "https://www.vvhan.com/",
+          "avatar": "https://q1.qlogo.cn/g?b=qq&nk=1655466387&s=640",
+          "desc": "运气是计划之外的东西."
+        }
       ]
     },
     {

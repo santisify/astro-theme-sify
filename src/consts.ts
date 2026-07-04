@@ -21,5 +21,5 @@ export const SOCIAL_LINKS = [
 ];
 
 export const npmCDN = '';
-export const walineServer = '';
-export const friendCircleServer = '';
+export const walineServer = 'https://waline.lazy-boy-acmer.cn';//已添加安全域名，若有需要，自行部署
+export const friendCircleServer = 'https://fcl.santisify.top';//已添加安全域名，若有需要，自行部署
