@@ -24,15 +24,21 @@ curl -fsSL https://bun.sh/install | bash
 # 克隆项目
 git clone https://github.com/santisify/astro-theme-sify.git my-blog
 cd my-blog
-bun install
+bun install #如果是node环境 npm install
 ```
 
 ### 常用命令
 
 ```bash
+# bun
 bun dev          # 启动开发服务器 (localhost:4321)
 bun run build    # 构建生产版本
 bun preview      # 预览生产构建
+
+# npm 
+npm run dev
+npm run build
+npm run preview
 ```
 
 ## 配置站点
@@ -147,18 +153,29 @@ const serverURL = 'https://your-waline-server.vercel.app';
 
 ### Vercel
 
-```bash
-vercel
-```
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/import?hasTrialAvailable=1&id=1253285029&name=astro-theme-sify&owner=santisify&provider=github&remainingProjects=1&s=https%3A%2F%2Fgithub.com%2Fsantisify%2Fastro-theme-sify&teamSlug=santisify&totalProjects=1)
+
+一键部署，无需额外配置。
 
 ### Cloudflare Pages
 
-- 构建命令：`bun run build`
-- 输出目录：`dist`
+首先fork当前仓库到自己的github
 
-### 其他平台
+![cf1](../../../../docs/cf-deploy1.png)
 
-任何支持静态文件托管的平台，直接部署 `dist/` 目录即可。
+![cf2](../../../../docs/cf-deploy2.png)
+
+![cf3](../../../../docs/cf-deploy3.png)
+
+![cf4](../../../../docs/cf-deploy4.png)
+
+![cf5](../../../../docs/cf-deploy5.png)
+
+### 其他静态托管
+
+在本地命令行运行`bun install && bun run build`
+
+构建后直接将 `dist/` 目录内容上传到任意静态文件服务器。
 
 ## 自定义主题
 
