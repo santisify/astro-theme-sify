@@ -312,23 +312,7 @@ html {
   color: rgba(255, 255, 255, 0.2);
 }
 
-/* Grain overlay */
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.06;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 256px 256px;
-}
 
-.dark .grain-overlay {
-  opacity: 0.04;
-  mix-blend-mode: screen;
-}
 
 /* Scroll reveal animations */
 .reveal-up {
@@ -362,10 +346,6 @@ html {
     opacity: 1;
     transform: none;
     transition: none;
-  }
-
-  .grain-overlay {
-    display: none;
   }
 }
 

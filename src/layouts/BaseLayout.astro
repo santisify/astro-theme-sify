@@ -6,10 +6,8 @@ import Footer from '@/components/Footer.astro';
 import SEO from '@/components/SEO.astro';
 import BackToTop from '@/components/BackToTop.astro';
 import Mermaid from '@/components/Mermaid.astro';
-import GrainOverlay from '@/components/GrainOverlay.astro';
 import SmoothScroll from '@/components/SmoothScroll.astro';
 import ScrollReveal from '@/components/ScrollReveal.astro';
-import CardTilt from '@/components/CardTilt.astro';
 import '@/styles/global.css';
 
 interface Props {
@@ -33,7 +31,7 @@ const {
     <SEO title={title} description={description} image={image} ogType={ogType} />
     <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#e9536a" />
+    <meta name="theme-color" content="#4b6bff" />
     <script is:inline src="/assets/js/mermaid.min.js"></script>
 
     <script is:inline>
@@ -78,10 +76,8 @@ const {
     <Footer />
     <BackToTop />
     <Mermaid />
-    <GrainOverlay />
     <SmoothScroll />
     <ScrollReveal />
-    <CardTilt />
 
     <script>
       function initCodeBlocks() {
