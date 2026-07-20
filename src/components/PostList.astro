@@ -1,5 +1,5 @@
 ---
-import PostCard from '@/components/PostCard.astro';
+import CompactCard from '@/components/CompactCard.astro';
 
 interface Post {
   id: string;
@@ -32,20 +32,19 @@ const normalPosts = posts.filter((p) => !p.data.pinned);
 {
   showPinned && pinnedPosts.length > 0 && (
     <section class="mb-10">
-      <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-        <span class="w-1 h-6 bg-primary rounded-full inline-block"></span>
+      <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+        <span class="w-1 h-5 bg-[var(--color-primary)] rounded-full inline-block"></span>
         置顶文章
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {pinnedPosts.map((post) => (
-          <PostCard
+          <CompactCard
             title={post.data.title}
             description={post.data.description}
             date={post.data.date}
             slug={post.slug}
             tags={post.data.tags}
             category={post.data.category}
-            cover={post.data.cover}
             body={post.body}
             pinned={true}
             draft={post.data.draft}
@@ -61,27 +60,26 @@ const normalPosts = posts.filter((p) => !p.data.pinned);
   normalPosts.length > 0 && (
     <section>
       {!showPinned && pinnedPosts.length === 0 && (
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-          <span class="w-1 h-6 bg-primary rounded-full inline-block"></span>
+        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          <span class="w-1 h-5 bg-[var(--color-primary)] rounded-full inline-block"></span>
           文章列表
         </h2>
       )}
       {showPinned && normalPosts.length > 0 && (
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
-          <span class="w-1 h-6 bg-primary rounded-full inline-block"></span>
+        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          <span class="w-1 h-5 bg-[var(--color-primary)] rounded-full inline-block"></span>
           文章列表
         </h2>
       )}
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {normalPosts.map((post) => (
-          <PostCard
+          <CompactCard
             title={post.data.title}
             description={post.data.description}
             date={post.data.date}
             slug={post.slug}
             tags={post.data.tags}
             category={post.data.category}
-            cover={post.data.cover}
             body={post.body}
             draft={post.data.draft}
             routePrefix={routePrefix}
