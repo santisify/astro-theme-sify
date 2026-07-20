@@ -1,128 +1,27 @@
 ---
-import { getCollection } from 'astro:content';
-import { SITE_TITLE, SITE_DESCRIPTION, SITE_COVER } from '@/consts';
-import { getWordCount } from '@/utils/readingTime';
-
-const allBlogPosts = await getCollection('blog');
-const sorted = allBlogPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const latestPosts = sorted.slice(0, 5);
-
-const categorySet = new Set<string>();
-const tagSet = new Set<string>();
-for (const post of allBlogPosts) {
-  if (post.data.category) categorySet.add(post.data.category.split('/')[0]);
-  for (const tag of post.data.tags || []) tagSet.add(tag);
-}
-
-function formatDate(d: Date) {
-  return d.toISOString().split('T')[0];
-}
+import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 ---
 
-<section class="relative overflow-hidden" data-hero>
-  <div class="absolute inset-0" data-hero-parallax>
-    <img
-      src={SITE_COVER}
-      alt=""
-      class="w-full h-full object-cover scale-110"
-      aria-hidden="true"
-    />
-    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
+<section class="relative overflow-hidden bg-[#111318]">
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#4b6bff]/5 via-transparent to-transparent"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#4b6bff]/[0.03] rounded-full blur-[120px]"></div>
   </div>
 
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-      <div class="text-white">
-        <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-xs text-white/70 mb-6 hero-reveal" data-hero-reveal>
-          <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
-          欢迎来到我的博客
-        </div>
-
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-5 tracking-tight leading-[1.1] hero-reveal" data-hero-reveal>
-          {SITE_TITLE}
-        </h1>
-
-        <p class="text-lg sm:text-xl text-white/65 font-light mb-8 leading-relaxed max-w-lg hero-reveal" data-hero-reveal>
-          {SITE_DESCRIPTION}
-        </p>
-
-        <div class="flex flex-wrap items-center gap-6 mb-10 hero-reveal" data-hero-reveal>
-          <div class="flex items-center gap-2 text-sm text-white/50">
-            <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span><span class="text-white font-semibold">{sorted.length}</span> 篇文章</span>
-          </div>
-          <div class="flex items-center gap-2 text-sm text-white/50">
-            <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-            </svg>
-            <span><span class="text-white font-semibold">{categorySet.size}</span> 个分类</span>
-          </div>
-          <div class="flex items-center gap-2 text-sm text-white/50">
-            <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-            </svg>
-            <span><span class="text-white font-semibold">{tagSet.size}</span> 个标签</span>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-3 hero-reveal" data-hero-reveal>
-          <a href="/archives" class="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-dark rounded-full text-sm font-medium transition-all shadow-lg shadow-primary/25">
-            浏览文章
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-          <a href="/about" class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/15 backdrop-blur-sm rounded-full text-sm font-medium text-white/80 hover:text-white transition-all border border-white/10">
-            了解更多
-          </a>
-        </div>
-      </div>
-
-      <div class="hero-reveal" data-hero-reveal>
-        <div class="bg-white/[0.07] backdrop-blur-xl rounded-3xl p-6 border border-white/[0.08] shadow-2xl">
-          <div class="flex items-center justify-between mb-5">
-            <h2 class="text-sm font-medium text-white/50 flex items-center gap-2">
-              <span class="w-1 h-4 bg-primary rounded-full inline-block"></span>
-              最新文章
-            </h2>
-            <a href="/archives" class="text-xs text-white/30 hover:text-primary transition-colors">
-              查看全部 →
-            </a>
-          </div>
-          <div class="space-y-1">
-            {latestPosts.map((post, index) => (
-              <a
-                href={`/post/${post.id}`}
-                class="flex items-center gap-4 py-3.5 border-b border-white/[0.05] last:border-0 group hover:bg-white/[0.04] rounded-xl px-3 -mx-3 transition-all"
-              >
-                <span class="text-[10px] font-mono text-white/20 w-5 shrink-0 tracking-wider">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <div class="flex-1 min-w-0">
-                  <h3 class="text-sm font-medium text-white/85 truncate group-hover:text-primary transition-colors">
-                    {post.data.title}
-                  </h3>
-                  <div class="flex items-center gap-2 mt-1 text-[11px] text-white/30">
-                    <time datetime={formatDate(post.data.date)}>{formatDate(post.data.date)}</time>
-                    {post.data.category && (
-                      <>
-                        <span class="opacity-40">·</span>
-                        <span>{post.data.category}</span>
-                      </>
-                    )}
-                  </div>
-                </div>
-                <svg class="w-3.5 h-3.5 text-white/15 group-hover:text-primary transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-28">
+    <div class="max-w-2xl">
+      <h1
+        class="text-4xl sm:text-5xl font-semibold text-white tracking-tight leading-[1.02] mb-4 hero-reveal"
+        data-hero-reveal
+      >
+        {SITE_TITLE}
+      </h1>
+      <p
+        class="text-base sm:text-lg text-white/50 font-light leading-relaxed hero-reveal"
+        data-hero-reveal
+      >
+        {SITE_DESCRIPTION}
+      </p>
     </div>
   </div>
 
@@ -141,39 +40,20 @@ function formatDate(d: Date) {
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const hero = document.querySelector('[data-hero]');
-    const parallaxLayer = document.querySelector('[data-hero-parallax]');
     const reveals = document.querySelectorAll('[data-hero-reveal]');
+    if (reveals.length === 0) return;
 
-    if (!hero || !parallaxLayer) return;
-
-    gsap.fromTo(parallaxLayer,
-      { y: 0 },
+    gsap.fromTo(reveals,
+      { opacity: 0, y: 20 },
       {
-        y: 50,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: hero,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power3.out',
+        delay: 0.1,
       }
     );
-
-    if (reveals.length > 0) {
-      gsap.fromTo(reveals,
-        { opacity: 0, y: 25 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: 'power3.out',
-          delay: 0.15,
-        }
-      );
-    }
   }
 
   initHero();
