@@ -5,32 +5,35 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary: #e9536a;
-  --color-primary-light: #f2a0ae;
-  --color-primary-dark: #c53050;
+  --color-primary: #4b6bff;
+  --color-primary-light: #7b94ff;
+  --color-primary-dark: #3a56e0;
 
-  --color-bg-light: #f5f5f5;
+  --color-bg-light: #f2f5f9;
   --color-bg-dark: #1a1a2e;
-  --color-card-light: #ffffff;
+  --color-card-light: #f7f9fc;
   --color-card-dark: #1e2a45;
 
-  --font-family-sans: 'Inter', 'Noto Sans SC', -apple-system, 'Segoe UI',
-    Roboto, sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-family-sans: 'SF Pro Display', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', system-ui, sans-serif;
+  --font-family-mono: 'SF Mono', 'JetBrains Mono', ui-monospace, monospace;
 }
 
 :root {
-  --color-text: #2c3e50;
-  --color-text-secondary: #7f8c8d;
-  --color-bg: #f5f5f5;
-  --color-card: #ffffff;
-  --color-border: #e8e8e8;
-  --color-text-rgb: 44 62 80;
-  --color-text-secondary-rgb: 127 140 141;
-  --color-bg-rgb: 245 245 245;
-  --color-card-rgb: 255 255 255;
-  --color-border-rgb: 232 232 232;
-  --color-primary-rgb: 233 83 106;
+  --color-text: #1f2937;
+  --color-text-secondary: rgba(0, 0, 0, 0.62);
+  --color-text-quiet: rgba(0, 0, 0, 0.48);
+  --color-bg: #f2f5f9;
+  --color-card: #f7f9fc;
+  --color-card-raised: #fbfcfe;
+  --color-border: rgba(15, 23, 42, 0.08);
+  --color-text-rgb: 31 41 55;
+  --color-text-secondary-rgb: 0 0 0;
+  --color-bg-rgb: 242 245 249;
+  --color-card-rgb: 247 249 252;
+  --color-border-rgb: 15 23 42;
+  --color-primary-rgb: 75 107 255;
+  --color-accent-wash: rgba(75, 107, 255, 0.06);
   --theme-transition-radius: 120vmax;
   color-scheme: light;
 }
@@ -38,25 +41,28 @@
 :root.dark {
   --color-text: #e8e8e8;
   --color-text-secondary: #999999;
+  --color-text-quiet: rgba(255, 255, 255, 0.45);
   --color-bg: #1a1a2e;
   --color-card: #1e2a45;
-  --color-border: #2a2a4a;
+  --color-card-raised: #243352;
+  --color-border: rgba(255, 255, 255, 0.08);
   --color-text-rgb: 232 232 232;
   --color-text-secondary-rgb: 153 153 153;
   --color-bg-rgb: 26 26 46;
   --color-card-rgb: 30 42 69;
-  --color-border-rgb: 42 42 74;
-  --color-primary-rgb: 242 160 174;
+  --color-border-rgb: 255 255 255;
+  --color-primary-rgb: 123 148 255;
+  --color-accent-wash: rgba(75, 107, 255, 0.10);
   color-scheme: dark;
 }
 
 html {
-  font-size: 17px;
+  font-size: 14px;
 }
 
 @media (max-width: 640px) {
   html {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
@@ -69,7 +75,7 @@ body {
 }
 
 ::selection {
-  @apply bg-primary/25;
+  background-color: rgba(75, 107, 255, 0.20);
 }
 
 * {
@@ -212,11 +218,8 @@ html {
 }
 
 .card-hover:hover {
-  @apply -translate-y-1 shadow-lg;
-}
-
-.dark .card-hover:hover {
-  @apply shadow-primary/10;
+  @apply -translate-y-0.5;
+  box-shadow: 0 4px 20px rgba(75, 107, 255, 0.08);
 }
 
 .code-block-wrapper {
