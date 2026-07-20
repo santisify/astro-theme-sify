@@ -118,3 +118,6 @@ dist
 /.idea
 bun.lock
 /.codegraph
+/docs/superpowers
+AGENTS.md
+DESIGN.md

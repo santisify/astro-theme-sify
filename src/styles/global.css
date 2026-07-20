@@ -349,26 +349,5 @@ html {
   }
 }
 
-/* Card tilt */
-.card-tilt {
-  transform-style: preserve-3d;
-  will-change: transform;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
 
-/* Nav capsule morph */
-.nav-pill {
-  position: fixed;
-  top: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 999px;
-  backdrop-filter: blur(22px) saturate(1.08);
-  -webkit-backdrop-filter: blur(22px) saturate(1.08);
-  z-index: 50;
-  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.6s ease,
-              box-shadow 0.6s ease;
-}
 

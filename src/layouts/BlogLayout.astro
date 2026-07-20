@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Sidebar from '@/components/Sidebar.astro';
+import FilterRail from '@/components/FilterRail.astro';
 import SidebarDrawer from '@/components/SidebarDrawer.astro';
 
 interface Props {
@@ -16,7 +16,7 @@ const { title, description } = Astro.props;
     <div class="flex flex-col lg:flex-row gap-8 py-8">
       <aside class="hidden lg:block w-full lg:w-80 shrink-0 order-first">
         <div class="sticky top-20 space-y-6">
-          <Sidebar />
+          <FilterRail />
         </div>
       </aside>
 
