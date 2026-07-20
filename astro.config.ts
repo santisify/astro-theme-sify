@@ -6,7 +6,7 @@ import { unified } from '@astrojs/markdown-remark';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  site: 'http://localhost:4321',
+  site: 'http://astro-sify-demo.lazy-boy-acmer.cn',
   integrations: [mdx()],
   vite: {
     plugins: [
