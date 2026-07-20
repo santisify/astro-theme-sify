@@ -34,9 +34,9 @@ const postData = filtered.map((p) => ({
 
 <BlogLayout title={tag}>
   <h1 class="text-2xl font-bold mb-8 flex items-center gap-2">
-    <span class="w-1 h-6 bg-primary rounded-full inline-block"></span>
+    <span class="w-1 h-6 bg-[var(--color-primary)] rounded-full inline-block"></span>
     标签：{tag}
-    <span class="text-base font-normal text-gray-400">
+    <span class="text-base font-normal text-[var(--color-text-quiet)]">
       ({filtered.length} 篇)
     </span>
   </h1>

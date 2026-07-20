@@ -23,13 +23,13 @@ const marqueeItems = [
 ];
 ---
 
-<footer class="border-t border-gray-200/50 dark:border-gray-700/50 mt-16 overflow-hidden">
-  <div class="marquee-track py-4 border-b border-gray-200/30 dark:border-gray-700/30">
+<footer class="border-t border-[var(--color-border)] mt-16 overflow-hidden">
+  <div class="marquee-track py-4 border-b border-[var(--color-border)]">
     <div class="marquee-content">
       {[...marqueeItems, ...marqueeItems].map((item) => (
         <a
           href={item.href}
-          class="marquee-item shrink-0 px-6 text-sm text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-primary transition-colors whitespace-nowrap"
+          class="marquee-item shrink-0 px-6 text-sm text-[var(--color-text-quiet)] hover:text-[var(--color-primary)] transition-colors whitespace-nowrap"
         >
           {item.label}
         </a>
@@ -40,27 +40,27 @@ const marqueeItems = [
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
       <div>
-        <a href="/" class="text-lg font-bold text-primary hover:opacity-80 transition-opacity">
+        <a href="/" class="text-lg font-bold text-[var(--color-primary)] hover:opacity-80 transition-opacity">
           {SITE_TITLE}
         </a>
-        <p class="mt-3 text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+        <p class="mt-3 text-sm text-[var(--color-text-secondary)] leading-relaxed">
           {SITE_DESCRIPTION}
         </p>
         <div class="flex items-center gap-3 mt-4">
-          <span class="text-xs text-gray-400 dark:text-gray-500">
+          <span class="text-xs text-[var(--color-text-quiet)]">
             {totalArticles} 篇文章 · {Math.round(totalWords / 1000)}k 字
           </span>
         </div>
       </div>
 
       <div>
-        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">导航</h3>
+        <h3 class="text-sm font-semibold text-[var(--color-text)] mb-4">导航</h3>
         <ul class="space-y-2.5">
           {NAV_ITEMS.map((item) => (
             <li>
               <a
                 href={item.href}
-                class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
+                class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
               >
                 {item.label}
               </a>
@@ -70,7 +70,7 @@ const marqueeItems = [
       </div>
 
       <div>
-        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">社交</h3>
+        <h3 class="text-sm font-semibold text-[var(--color-text)] mb-4">社交</h3>
         <ul class="space-y-2.5">
           {SOCIAL_LINKS.map((link) => (
             <li>
@@ -78,7 +78,7 @@ const marqueeItems = [
                 href={link.href}
                 target={link.href.startsWith('http') ? '_blank' : undefined}
                 rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
+                class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
               >
                 {link.name}
               </a>
@@ -87,7 +87,7 @@ const marqueeItems = [
           <li>
             <a
               href="/rss.xml"
-              class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors"
+              class="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
             >
               RSS
             </a>
@@ -96,10 +96,10 @@ const marqueeItems = [
       </div>
     </div>
 
-    <div class="border-t border-gray-200/50 dark:border-gray-700/50 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400 dark:text-gray-500">
+    <div class="border-t border-[var(--color-border)] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--color-text-quiet)]">
       <span>&copy; {startYear}{currentYear > startYear ? ` - ${currentYear}` : ''} {SITE_AUTHOR}</span>
       <span>
-        Powered by <a href="https://astro.build" class="text-primary hover:underline">Astro</a> & <a href="https://tailwindcss.com/" class="text-cyan-500 hover:underline">Tailwind CSS</a>
+        Powered by <a href="https://astro.build" class="text-[var(--color-primary)] hover:underline">Astro</a> & <a href="https://tailwindcss.com/" class="text-[var(--color-primary)] hover:underline">Tailwind CSS</a>
       </span>
     </div>
   </div>

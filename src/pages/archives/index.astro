@@ -23,10 +23,10 @@ const tags = new Set(allPosts.flatMap(p => p.data.tags || [])).size;
 
 <BlogLayout title="归档">
   <header class="mb-10">
-    <p class="text-sm text-primary font-medium mb-2 tracking-wide uppercase">Archives</p>
+    <p class="text-sm text-[var(--color-primary)] font-medium mb-2 tracking-wide uppercase">Archives</p>
     <h1 class="text-3xl sm:text-4xl font-bold mb-3">文章归档</h1>
-    <p class="text-gray-500 dark:text-gray-400">
-      共 <span class="text-primary font-semibold">{totalPosts}</span> 篇文章，<span class="text-primary font-semibold">{categories}</span> 个分类，<span class="text-primary font-semibold">{tags}</span> 个标签
+    <p class="text-[var(--color-text-secondary)]">
+      共 <span class="text-[var(--color-primary)] font-semibold">{totalPosts}</span> 篇文章，<span class="text-[var(--color-primary)] font-semibold">{categories}</span> 个分类，<span class="text-[var(--color-primary)] font-semibold">{tags}</span> 个标签
     </p>
   </header>
   <PostList posts={postData} />

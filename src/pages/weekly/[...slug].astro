@@ -33,11 +33,11 @@ function formatDate(d: Date) {
 
 <PostLayout title={post.data.title} description={post.data.description} headings={headings} cover={post.data.cover}>
   <header class="mb-8">
-    <span class="inline-block text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
+    <span class="inline-block text-sm font-medium text-[var(--color-primary)] bg-[var(--color-accent-wash)] px-3 py-1 rounded-full mb-4">
       周刊 #{post.data.issue}
     </span>
     <h1 class="text-3xl font-bold mb-4">{post.data.title}</h1>
-    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-400 dark:text-gray-500">
+    <div class="flex flex-wrap items-center gap-4 text-sm text-[var(--color-text-secondary)]">
       <time datetime={formatDate(post.data.date)}>
         {formatDate(post.data.date)}
       </time>

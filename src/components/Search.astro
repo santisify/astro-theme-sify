@@ -1,27 +1,27 @@
 <div id="search-modal" class="fixed inset-0 z-[100] hidden" aria-hidden="true">
   <div id="search-backdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
   <div class="absolute top-[10%] sm:top-[15%] left-1/2 -translate-x-1/2 w-full max-w-xl max-h-[80vh] flex flex-col">
-    <div class="bg-white dark:bg-[var(--color-card-dark)] rounded-2xl shadow-2xl overflow-hidden mx-4">
-      <div class="flex items-center gap-3 px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-        <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <div class="bg-[var(--color-card)] dark:bg-[var(--color-card)] rounded-2xl shadow-2xl overflow-hidden mx-4 border border-[var(--color-border)]">
+      <div class="flex items-center gap-3 px-4 py-3 border-b border-[var(--color-border)]">
+        <svg class="w-5 h-5 text-[var(--color-text-quiet)] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
         <input
           id="search-input"
           type="text"
           placeholder="搜索文章..."
-          class="flex-1 bg-transparent border-none outline-none text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400"
+          class="flex-1 bg-transparent border-none outline-none text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-quiet)]"
           autocomplete="off"
         />
-        <button id="search-close" class="flex items-center justify-center w-11 h-11 -mr-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors" aria-label="关闭搜索">
-          <kbd class="text-[10px] font-medium text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded mr-1">esc</kbd>
+        <button id="search-close" class="flex items-center justify-center w-11 h-11 -mr-2 rounded-lg text-[var(--color-text-quiet)] hover:text-[var(--color-text)] transition-colors" aria-label="关闭搜索">
+          <kbd class="text-[10px] font-medium text-[var(--color-text-quiet)] bg-[var(--color-bg)] px-1.5 py-0.5 rounded mr-1">esc</kbd>
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
       </div>
       <div id="search-results" class="max-h-80 overflow-y-auto p-2">
-        <div class="px-3 py-8 text-center text-sm text-gray-400">输入关键词搜索文章</div>
+        <div class="px-3 py-8 text-center text-sm text-[var(--color-text-quiet)]">输入关键词搜索文章</div>
       </div>
     </div>
   </div>
@@ -63,7 +63,7 @@
     const input = document.getElementById('search-input') as HTMLInputElement;
     if (input) input.value = '';
     const results = document.getElementById('search-results');
-    if (results) results.innerHTML = '<div class="px-3 py-8 text-center text-sm text-gray-400">输入关键词搜索文章</div>';
+    if (results) results.innerHTML = '<div class="px-3 py-8 text-center text-sm text-[var(--color-text-quiet)]">输入关键词搜索文章</div>';
   }
 
   function search(query: string) {
@@ -71,12 +71,12 @@
     if (!results) return;
 
     if (!index) {
-      results.innerHTML = '<div class="px-3 py-8 text-center text-sm text-gray-400">加载中...</div>';
+      results.innerHTML = '<div class="px-3 py-8 text-center text-sm text-[var(--color-text-quiet)]">加载中...</div>';
       return;
     }
 
     if (!query.trim()) {
-      results.innerHTML = '<div class="px-3 py-8 text-center text-sm text-gray-400">输入关键词搜索文章</div>';
+      results.innerHTML = '<div class="px-3 py-8 text-center text-sm text-[var(--color-text-quiet)]">输入关键词搜索文章</div>';
       return;
     }
 
@@ -89,7 +89,7 @@
     }).slice(0, 20);
 
     if (filtered.length === 0) {
-      results.innerHTML = '<div class="px-3 py-8 text-center text-sm text-gray-400">没有找到结果</div>';
+      results.innerHTML = '<div class="px-3 py-8 text-center text-sm text-[var(--color-text-quiet)]">没有找到结果</div>';
       return;
     }
 
@@ -98,17 +98,17 @@
     results.innerHTML = filtered.map((item: any) => {
       const snippet = buildSnippet(item, terms);
       return `
-      <a href="${item.type === 'weekly' ? '/weekly/' : '/post/'}${item.slug}" class="flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group">
+      <a href="${item.type === 'weekly' ? '/weekly/' : '/post/'}${item.slug}" class="flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-[var(--color-accent-wash)] transition-colors group">
         <div class="flex-1 min-w-0">
-          <div class="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-primary transition-colors line-clamp-1">${highlight(item.title, highlightRe)}</div>
-          ${snippet ? `<div class="text-xs text-gray-400 dark:text-gray-500 mt-0.5 line-clamp-2">${highlight(snippet, highlightRe)}</div>` : ''}
+          <div class="text-sm font-medium text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors line-clamp-1">${highlight(item.title, highlightRe)}</div>
+          ${snippet ? `<div class="text-xs text-[var(--color-text-quiet)] mt-0.5 line-clamp-2">${highlight(snippet, highlightRe)}</div>` : ''}
           <div class="flex items-center gap-2 mt-0.5">
-            ${item.category ? `<span class="text-xs text-primary/70">${escapeHtml(item.category)}</span>` : ''}
-            ${item.category ? '<span class="w-px h-2.5 bg-gray-300 dark:bg-gray-600"></span>' : ''}
-            <span class="text-xs text-gray-400 dark:text-gray-500">${item.type === 'weekly' ? '周刊' : '博客'}</span>
+            ${item.category ? `<span class="text-xs text-[var(--color-primary)]/70">${escapeHtml(item.category)}</span>` : ''}
+            ${item.category ? '<span class="w-px h-2.5 bg-[var(--color-border)]"></span>' : ''}
+            <span class="text-xs text-[var(--color-text-quiet)]">${item.type === 'weekly' ? '周刊' : '博客'}</span>
           </div>
         </div>
-        <svg class="w-4 h-4 text-gray-300 dark:text-gray-600 shrink-0 mt-1 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <svg class="w-4 h-4 text-[var(--color-text-quiet)] shrink-0 mt-1 group-hover:text-[var(--color-primary)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
         </svg>
       </a>

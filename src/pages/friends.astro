@@ -79,9 +79,9 @@ const articles = data?.article_data || [];
 <BaseLayout title="友链">
   <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
     <header class="mb-10">
-      <p class="text-sm text-primary font-medium mb-2 tracking-wide uppercase">Friends</p>
+      <p class="text-sm text-[var(--color-primary)] font-medium mb-2 tracking-wide uppercase">Friends</p>
       <h1 class="text-3xl sm:text-4xl font-bold mb-3">友情链接</h1>
-      <p class="text-gray-500 dark:text-gray-400">
+      <p class="text-[var(--color-text-secondary)]">
         友情链接 &amp; 友链圈最新文章动态
       </p>
     </header>
@@ -90,7 +90,7 @@ const articles = data?.article_data || [];
       friendList.length > 0 && (
         <div class="mb-8">
           <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
-            <span class="w-1 h-5 bg-primary rounded-full inline-block"></span>
+            <span class="w-1 h-5 bg-[var(--color-primary)] rounded-full inline-block"></span>
             我的朋友们
           </h2>
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -99,25 +99,25 @@ const articles = data?.article_data || [];
                 href={friend.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="card-hover bg-white dark:bg-[var(--color-card-dark)] rounded-xl shadow-sm p-4 flex flex-col items-center text-center group friend-card"
+                class="bg-[var(--color-card)] dark:bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-4 flex flex-col items-center text-center group hover:bg-[var(--color-card-raised)] dark:hover:bg-[var(--color-card-raised)] hover:border-[var(--color-primary)]/15 transition-all duration-300 friend-card"
                 data-url={friend.link}
               >
                 <div class="relative">
                   <img
                     src={friend.avatar}
                     alt={friend.name}
-                    class="w-14 h-14 rounded-full object-cover mb-2 ring-2 ring-primary/10 group-hover:ring-primary/30 transition-all"
+                    class="w-14 h-14 rounded-full object-cover mb-2 ring-2 ring-[var(--color-primary)]/10 group-hover:ring-[var(--color-primary)]/30 transition-all"
                     loading="lazy"
                     width="56"
                     height="56"
                     onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 56 56%22><rect fill=%22%23e9536a%22 width=%2256%22 height=%2256%22 opacity=%22.2%22/><circle fill=%22%23e9536a%22 cx=%2228%22 cy=%2221%22 r=%2211%22/><ellipse fill=%22%23e9536a%22 cx=%2228%22 cy=%2249%22 rx=%2217%22 ry=%2214%22/></svg>'"
                   />
-                  <span class="friend-status absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[var(--color-card-dark)] bg-gray-300" />
+                  <span class="friend-status absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[var(--color-card)] bg-gray-300" />
                 </div>
-                <span class="text-sm font-medium group-hover:text-primary transition-colors">
+                <span class="text-sm font-medium group-hover:text-[var(--color-primary)] transition-colors">
                   {friend.name}
                 </span>
-                <p class="text-xs text-gray-400 dark:text-gray-500 mt-1 line-clamp-2">
+                <p class="text-xs text-[var(--color-text-quiet)] mt-1 line-clamp-2">
                   {friend.intro}
                 </p>
               </a>
@@ -131,7 +131,7 @@ const articles = data?.article_data || [];
       specialList.length > 0 && (
         <div class="mb-8">
           <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
-            <span class="w-1 h-5 bg-green-500 rounded-full inline-block"></span>
+            <span class="w-1 h-5 bg-[var(--color-primary)] rounded-full inline-block"></span>
             特别推荐
           </h2>
           <div class="grid grid-cols-2 gap-3">
@@ -140,7 +140,7 @@ const articles = data?.article_data || [];
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="card-hover bg-white dark:bg-[var(--color-card-dark)] rounded-xl shadow-sm p-4 flex items-center gap-3 group"
+                class="bg-[var(--color-card)] dark:bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-4 flex items-center gap-3 group hover:bg-[var(--color-card-raised)] dark:hover:bg-[var(--color-card-raised)] hover:border-[var(--color-primary)]/15 transition-all duration-300"
               >
                 <img
                   src={item.avatar}
@@ -152,10 +152,10 @@ const articles = data?.article_data || [];
                   onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><rect fill=%22%2322c55e%22 width=%2232%22 height=%2232%22 opacity=%22.2%22/><circle fill=%22%2322c55e%22 cx=%2216%22 cy=%2212%22 r=%226%22/><ellipse fill=%22%2322c55e%22 cx=%2216%22 cy=%2228%22 rx=%2210%22 ry=%228%22/></svg>'"
                 />
                 <div class="flex-1 min-w-0">
-                  <span class="text-sm font-medium group-hover:text-green-500 transition-colors">
+                  <span class="text-sm font-medium group-hover:text-[var(--color-primary)] transition-colors">
                     {item.name}
                   </span>
-                  <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5 line-clamp-2">
+                  <p class="text-xs text-[var(--color-text-quiet)] mt-0.5 line-clamp-2">
                     {item.intro}
                   </p>
                 </div>
@@ -179,25 +179,25 @@ const articles = data?.article_data || [];
       stats && (
         <>
           <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
-            <span class="w-1 h-5 bg-blue-500 rounded-full inline-block"></span>
+            <span class="w-1 h-5 bg-[var(--color-primary)] rounded-full inline-block"></span>
             友链圈动态
           </h2>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-          <div class="bg-white dark:bg-[var(--color-card-dark)] rounded-xl shadow-sm p-4 text-center">
-            <div class="text-2xl font-bold text-primary">{stats.friends_num}</div>
-            <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">友链总数</div>
+          <div class="bg-[var(--color-card)] dark:bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-4 text-center">
+            <div class="text-2xl font-bold text-[var(--color-primary)]">{stats.friends_num}</div>
+            <div class="text-xs text-[var(--color-text-quiet)] mt-1">友链总数</div>
           </div>
-          <div class="bg-white dark:bg-[var(--color-card-dark)] rounded-xl shadow-sm p-4 text-center">
-            <div class="text-2xl font-bold text-green-500">{stats.active_num}</div>
-            <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">活跃友链</div>
+          <div class="bg-[var(--color-card)] dark:bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-4 text-center">
+            <div class="text-2xl font-bold text-[var(--color-primary)]">{stats.active_num}</div>
+            <div class="text-xs text-[var(--color-text-quiet)] mt-1">活跃友链</div>
           </div>
-          <div class="bg-white dark:bg-[var(--color-card-dark)] rounded-xl shadow-sm p-4 text-center">
-            <div class="text-2xl font-bold text-blue-500">{stats.article_num}</div>
-            <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">文章总数</div>
+          <div class="bg-[var(--color-card)] dark:bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-4 text-center">
+            <div class="text-2xl font-bold text-[var(--color-primary)]">{stats.article_num}</div>
+            <div class="text-xs text-[var(--color-text-quiet)] mt-1">文章总数</div>
           </div>
-          <div class="bg-white dark:bg-[var(--color-card-dark)] rounded-xl shadow-sm p-4 text-center">
-            <div class="text-sm font-semibold text-gray-500 dark:text-gray-400 mt-1">{stats.last_updated_time}</div>
-            <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">最后更新</div>
+          <div class="bg-[var(--color-card)] dark:bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-4 text-center">
+            <div class="text-sm font-semibold text-[var(--color-text-secondary)] mt-1">{stats.last_updated_time}</div>
+            <div class="text-xs text-[var(--color-text-quiet)] mt-1">最后更新</div>
           </div>
           </div>
         </>
@@ -206,34 +206,34 @@ const articles = data?.article_data || [];
 
     {
       articles.length > 0 && (
-        <div class="space-y-3">
+        <div class="space-y-2">
           {articles.map((article) => (
             <a
               href={article.link}
               target="_blank"
               rel="noopener noreferrer"
-              class="card-hover flex items-center gap-4 bg-white dark:bg-[var(--color-card-dark)] rounded-xl shadow-sm p-4 group"
+              class="flex items-center gap-4 bg-[var(--color-card)] dark:bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] p-4 group hover:bg-[var(--color-card-raised)] dark:hover:bg-[var(--color-card-raised)] hover:border-[var(--color-primary)]/15 transition-all duration-300"
             >
               <img
                 src={article.avatar}
                 alt={article.author}
-                class="w-10 h-10 rounded-full object-cover shrink-0 ring-2 ring-primary/10"
+                class="w-10 h-10 rounded-full object-cover shrink-0 ring-2 ring-[var(--color-primary)]/10"
                 loading="lazy"
                 width="40"
                 height="40"
                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect fill=%22%23e9536a%22 width=%2240%22 height=%2240%22 opacity=%22.2%22/><circle fill=%22%23e9536a%22 cx=%2220%22 cy=%2215%22 r=%228%22/><ellipse fill=%22%23e9536a%22 cx=%2220%22 cy=%2235%22 rx=%2212%22 ry=%2210%22/></svg>'"
               />
               <div class="flex-1 min-w-0">
-                <h3 class="text-sm font-medium truncate group-hover:text-primary transition-colors">
+                <h3 class="text-sm font-medium truncate group-hover:text-[var(--color-primary)] transition-colors">
                   {article.title}
                 </h3>
-                <div class="flex items-center gap-3 mt-1 text-xs text-gray-400 dark:text-gray-500">
+                <div class="flex items-center gap-3 mt-1 text-xs text-[var(--color-text-quiet)]">
                   <span class="truncate">{article.author}</span>
-                  <span class="w-px h-3 bg-gray-300 dark:bg-gray-600"></span>
+                  <span class="w-px h-3 bg-[var(--color-border)]"></span>
                   <span class="shrink-0">{article.created}</span>
                 </div>
               </div>
-              <svg class="w-4 h-4 text-gray-300 dark:text-gray-600 shrink-0 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <svg class="w-4 h-4 text-[var(--color-text-quiet)] shrink-0 group-hover:text-[var(--color-primary)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
             </a>
@@ -244,13 +244,13 @@ const articles = data?.article_data || [];
 
     {
       !fetchError && !stats && (
-        <div class="text-center py-12 text-gray-400">
+        <div class="text-center py-12 text-[var(--color-text-quiet)]">
           <p>暂无友链数据</p>
         </div>
       )
     }
 
-    <div class="mt-10 pt-8 border-t border-gray-100 dark:border-gray-800">
+    <div class="mt-10 pt-8 border-t border-[var(--color-border)]">
       <Comment />
     </div>
   </div>

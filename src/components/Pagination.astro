@@ -20,7 +20,7 @@ function pageUrl(page: number): string {
         currentPage > 1 && (
           <a
             href={pageUrl(currentPage - 1)}
-            class="px-4 py-2 rounded-lg bg-white dark:bg-[var(--color-card-dark)] shadow-sm text-sm hover:text-primary transition-colors"
+            class="px-4 py-2 rounded-full bg-[var(--color-card)] dark:bg-[var(--color-card)] border border-[var(--color-border)] text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20 transition-all duration-300"
           >
             上一页
           </a>
@@ -30,10 +30,10 @@ function pageUrl(page: number): string {
         Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <a
             href={pageUrl(page)}
-            class={`px-4 py-2 rounded-lg text-sm transition-colors ${
+            class={`px-4 py-2 rounded-full text-sm transition-all duration-300 ${
               page === currentPage
-                ? 'bg-primary text-white'
-                : 'bg-white dark:bg-[var(--color-card-dark)] shadow-sm hover:text-primary'
+                ? 'bg-[var(--color-primary)] text-white border border-[var(--color-primary)]'
+                : 'bg-[var(--color-card)] dark:bg-[var(--color-card)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20'
             }`}
           >
             {page}
@@ -44,7 +44,7 @@ function pageUrl(page: number): string {
         currentPage < totalPages && (
           <a
             href={pageUrl(currentPage + 1)}
-            class="px-4 py-2 rounded-lg bg-white dark:bg-[var(--color-card-dark)] shadow-sm text-sm hover:text-primary transition-colors"
+            class="px-4 py-2 rounded-full bg-[var(--color-card)] dark:bg-[var(--color-card)] border border-[var(--color-border)] text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)]/20 transition-all duration-300"
           >
             下一页
           </a>

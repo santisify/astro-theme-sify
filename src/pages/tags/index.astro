@@ -20,42 +20,26 @@ const maxCount = tags.length > 0 ? tags[0].count : 1;
 
 <BlogLayout title="标签">
   <header class="mb-10">
-    <p class="text-sm text-primary font-medium mb-2 tracking-wide uppercase">Tags</p>
+    <p class="text-sm text-[var(--color-primary)] font-medium mb-2 tracking-wide uppercase">Tags</p>
     <h1 class="text-3xl sm:text-4xl font-bold mb-3">标签云</h1>
-    <p class="text-gray-500 dark:text-gray-400">
-      共 <span class="text-primary font-semibold">{tags.length}</span> 个标签
+    <p class="text-[var(--color-text-secondary)]">
+      共 <span class="text-[var(--color-primary)] font-semibold">{tags.length}</span> 个标签
     </p>
   </header>
 
-  <div class="relative">
-    <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-30 dark:opacity-10" aria-hidden="true">
-      <defs>
-        <linearGradient id="tag-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="var(--color-primary)" stop-opacity="0.1" />
-          <stop offset="100%" stop-color="var(--color-primary)" stop-opacity="0.02" />
-        </linearGradient>
-      </defs>
-      <circle cx="15%" cy="20%" r="80" fill="url(#tag-grad)" />
-      <circle cx="80%" cy="60%" r="120" fill="url(#tag-grad)" />
-      <circle cx="50%" cy="80%" r="60" fill="url(#tag-grad)" />
-      <path d="M10 50 Q 30 20 60 50 T 110 50" stroke="var(--color-primary)" stroke-opacity="0.08" fill="none" stroke-width="1" />
-      <path d="M20 80 Q 50 50 80 80 T 140 80" stroke="var(--color-primary)" stroke-opacity="0.06" fill="none" stroke-width="1" />
-    </svg>
-
-    <div class="relative flex flex-wrap gap-3 justify-center py-4">
-      {tags.map((tag) => {
-        const ratio = tag.count / maxCount;
-        const sizeClass = ratio > 0.7 ? 'text-lg px-5 py-3' : ratio > 0.3 ? 'text-base px-4 py-2.5' : 'text-sm px-3 py-2';
-        return (
-          <a
-            href={`/tags/${tag.name}`}
-            class={`bg-white dark:bg-[var(--color-card-dark)] rounded-full shadow-sm hover:shadow-md hover:text-primary dark:hover:text-primary transition-all ${sizeClass}`}
-          >
-            <span class="font-medium">{tag.name}</span>
-            <sup class="text-xs text-gray-400 dark:text-gray-500 ml-0.5">{tag.count}</sup>
-          </a>
-        );
-      })}
-    </div>
+  <div class="flex flex-wrap gap-2.5 py-4">
+    {tags.map((tag) => {
+      const ratio = tag.count / maxCount;
+      const sizeClass = ratio > 0.7 ? 'text-base px-4 py-2' : ratio > 0.3 ? 'text-sm px-3.5 py-1.5' : 'text-xs px-3 py-1.5';
+      return (
+        <a
+          href={`/tags/${tag.name}`}
+          class={`bg-[var(--color-card)] dark:bg-[var(--color-card)] rounded-full border border-[var(--color-border)] hover:bg-[var(--color-accent-wash)] hover:border-[var(--color-primary)]/20 hover:text-[var(--color-primary)] dark:hover:text-[var(--color-primary)] transition-all duration-300 ${sizeClass}`}
+        >
+          <span class="font-medium">{tag.name}</span>
+          <sup class="text-[10px] text-[var(--color-text-quiet)] ml-0.5">{tag.count}</sup>
+        </a>
+      );
+    })}
   </div>
 </BlogLayout>
