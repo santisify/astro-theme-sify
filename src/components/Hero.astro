@@ -33,12 +33,9 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
 
 <script>
   import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
   function initHero() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    gsap.registerPlugin(ScrollTrigger);
 
     const reveals = document.querySelectorAll('[data-hero-reveal]');
     if (reveals.length === 0) return;
