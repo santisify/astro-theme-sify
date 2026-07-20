@@ -1,12 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Sidebar from '@/components/Sidebar.astro';
+import FilterRail from '@/components/FilterRail.astro';
 import SidebarDrawer from '@/components/SidebarDrawer.astro';
 import Hero from '@/components/Hero.astro';
 import PostList from '@/components/PostList.astro';
-import CategoriesShowcase from '@/components/CategoriesShowcase.astro';
-import SectionHeader from '@/components/SectionHeader.astro';
 import { resolveCover } from '@/pages/_imageStore';
 
 const allPosts = await getCollection('blog');
@@ -26,16 +24,14 @@ const postData = sorted.map((p) => ({
   <Hero />
 
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col lg:flex-row gap-8 py-8">
-      <aside class="hidden lg:block w-full lg:w-80 shrink-0 order-first">
-        <div class="sticky top-20 space-y-6">
-          <Sidebar />
+    <div class="flex flex-col lg:flex-row gap-6 py-8">
+      <aside class="hidden lg:block w-full lg:w-64 shrink-0 order-first">
+        <div class="sticky top-20">
+          <FilterRail />
         </div>
       </aside>
 
       <div class="flex-1 min-w-0">
-        <CategoriesShowcase />
-        <SectionHeader title="最新文章" />
         <PostList posts={postData} showPinned />
       </div>
     </div>
