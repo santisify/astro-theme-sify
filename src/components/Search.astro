@@ -132,7 +132,7 @@
   }
 
   function highlight(text: string, re: RegExp) {
-    return escapeHtml(text).replace(re, '<mark class="bg-primary/20 text-primary rounded-sm px-0.5">$1</mark>');
+    return escapeHtml(text).replace(re, '<mark class="bg-[var(--color-primary)]/20 text-[var(--color-primary)] rounded-sm px-0.5">$1</mark>');
   }
 
   function escapeRegex(str: string) {

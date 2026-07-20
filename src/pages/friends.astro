@@ -112,7 +112,7 @@ const articles = data?.article_data || [];
                     height="56"
                     onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 56 56%22><rect fill=%22%23e9536a%22 width=%2256%22 height=%2256%22 opacity=%22.2%22/><circle fill=%22%23e9536a%22 cx=%2228%22 cy=%2221%22 r=%2211%22/><ellipse fill=%22%23e9536a%22 cx=%2228%22 cy=%2249%22 rx=%2217%22 ry=%2214%22/></svg>'"
                   />
-                  <span class="friend-status absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[var(--color-card)] bg-gray-300" />
+                  <span class="friend-status absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-white dark:border-[var(--color-card)] bg-[var(--color-text-quiet)]" />
                 </div>
                 <span class="text-sm font-medium group-hover:text-[var(--color-primary)] transition-colors">
                   {friend.name}
@@ -273,11 +273,11 @@ const articles = data?.article_data || [];
 
         fetch(url, { method: 'HEAD', mode: 'no-cors', signal: AbortSignal.timeout(5000) })
           .then(function() {
-            statusDot.classList.remove('bg-gray-300');
+            statusDot.classList.remove('bg-[var(--color-text-quiet)]');
             statusDot.classList.add('bg-green-500');
           })
           .catch(function() {
-            statusDot.classList.remove('bg-gray-300');
+            statusDot.classList.remove('bg-[var(--color-text-quiet)]');
             statusDot.classList.add('bg-red-500');
           });
       });
