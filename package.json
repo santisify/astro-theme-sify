@@ -4,7 +4,7 @@
   "description": "A blog theme built with Astro and Tailwind CSS",
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "rm -rf astro && rm -rf dist && astro dev",
     "build": "astro build",
     "preview": "astro preview"
   },
