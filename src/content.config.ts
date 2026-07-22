@@ -1,6 +1,13 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+function removeDupsAndLowerCase(array: string[]) {
+  if (!array.length) return array
+  const lowercaseItems = array.map((str) => str.toLowerCase())
+  const distinctItems = new Set(lowercaseItems)
+  return Array.from(distinctItems)
+}
+
 const blogCollection = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
@@ -8,7 +15,7 @@ const blogCollection = defineCollection({
     description: z.string().optional(),
     date: z.coerce.date().default(() => new Date()),
     updated: z.coerce.date().optional(),
-    tags: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
     category: z.string().optional(),
     cover: z.string().optional(),
     series: z.string().optional(),
@@ -23,7 +30,7 @@ const weeklyCollection = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     date: z.coerce.date().default(() => new Date()),
-    tags: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
     cover: z.string().optional(),
     issue: z.number(),
     draft: z.boolean().default(false),
