@@ -212,15 +212,8 @@ html {
   @apply border-gray-200 dark:border-gray-700;
 }
 
-.card-hover {
-  @apply transition-all duration-300 ease-out;
-  will-change: transform, box-shadow;
-}
 
-.card-hover:hover {
-  @apply -translate-y-0.5;
-  box-shadow: 0 4px 20px rgba(75, 107, 255, 0.08);
-}
+/* Theme transition sync */
 
 .code-block-wrapper {
   position: relative;
@@ -312,22 +305,6 @@ html {
   color: rgba(255, 255, 255, 0.2);
 }
 
-
-
-/* Scroll reveal animations */
-.reveal-up {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal-up.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Theme transition sync */
 .theme-transitioning,
 .theme-transitioning *,
 .theme-transitioning *::before,
@@ -339,15 +316,3 @@ html {
               fill 0.6s ease,
               stroke 0.6s ease !important;
 }
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .reveal-up {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-
-

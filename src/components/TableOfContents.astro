@@ -18,11 +18,11 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 {
   filtered.length > 0 && (
     <nav class:list={[
-      'bg-white dark:bg-[var(--color-card-dark)] rounded-2xl shadow-sm p-5',
+      'bg-white/80 dark:bg-[var(--color-card)] rounded-2xl shadow-sm p-5',
       !mobile && 'hidden lg:block',
     ]}>
       {!mobile && (
-        <h2 class="text-sm font-semibold mb-3 text-gray-900 dark:text-gray-100">
+        <h2 class="text-sm font-semibold mb-3 text-[var(--color-text)]">
           目录
         </h2>
       )}
@@ -33,7 +33,7 @@ const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
               href={`#${heading.slug}`}
               id={mobile ? undefined : `toc-${heading.slug}`}
               class:list={[
-                'toc-link block transition-colors hover:text-primary text-gray-500 dark:text-gray-400 rounded-lg',
+                'toc-link block transition-colors hover:text-primary text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)] rounded-lg',
                 mobile ? 'text-sm py-2.5 px-3 min-h-[44px] flex items-center' : 'text-xs py-1.5 px-2',
                 heading.depth === 3 && (mobile ? 'pl-7' : 'pl-4'),
               ]}

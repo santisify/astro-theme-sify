@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_AVATAR, SOCIAL_LINKS } from '@/consts';
+import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_AVATAR, SOCIAL_LINKS, SITE_URL } from '@/consts';
 
 const allPosts = await getCollection('blog');
 
@@ -20,6 +20,14 @@ for (const post of allPosts) {
 
 const allCategories = Array.from(categoryMap.entries()).sort((a, b) => b[1] - a[1]);
 const allTags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
+
+const totalPosts = allPosts.length;
+let totalWords = 0;
+for (const post of allPosts) {
+  const body = post.body || '';
+  const words = body.trim().split(/\s+/).length;
+  totalWords += words;
+}
 ---
 
 <aside class="space-y-4">
@@ -34,6 +42,7 @@ const allTags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
       />
       <div>
         <h3 class="font-semibold text-sm text-[var(--color-text)]">{SITE_AUTHOR}</h3>
+        <p class="text-xs text-[var(--color-text-quiet)] mt-0.5 line-clamp-2">{SITE_DESCRIPTION}</p>
       </div>
     </div>
     <div class="flex items-center gap-2">
@@ -57,6 +66,20 @@ const allTags = Array.from(tagMap.entries()).sort((a, b) => b[1] - a[1]);
           )}
         </a>
       ))}
+    </div>
+  </div>
+
+  <div class="bg-white/80 dark:bg-[var(--color-card)] backdrop-blur-sm rounded-xl p-4 border border-[var(--color-border)]">
+    <p class="text-xs font-medium text-[var(--color-text-quiet)] uppercase tracking-widest mb-2">统计</p>
+    <div class="grid grid-cols-2 gap-4 text-center">
+      <div>
+        <div class="font-semibold text-sm text-[var(--color-text)]">{totalPosts}</div>
+        <div class="text-[10px] text-[var(--color-text-quiet)] uppercase tracking-wider">文章</div>
+      </div>
+      <div class="border-l border-[var(--color-border)]">
+        <div class="font-semibold text-sm text-[var(--color-text)]">{Math.round(totalWords / 1000)}k</div>
+        <div class="text-[10px] text-[var(--color-text-quiet)] uppercase tracking-wider">字数</div>
+      </div>
     </div>
   </div>
 

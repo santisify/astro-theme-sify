@@ -45,6 +45,7 @@ const normalPosts = posts.filter((p) => !p.data.pinned);
             slug={post.slug}
             tags={post.data.tags}
             category={post.data.category}
+            cover={post.data.cover}
             body={post.body}
             pinned={true}
             draft={post.data.draft}
@@ -80,6 +81,7 @@ const normalPosts = posts.filter((p) => !p.data.pinned);
             slug={post.slug}
             tags={post.data.tags}
             category={post.data.category}
+            cover={post.data.cover}
             body={post.body}
             draft={post.data.draft}
             routePrefix={routePrefix}
