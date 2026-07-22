@@ -28,7 +28,21 @@ const filtered = allPosts
   .filter((post) => {
     const cat = post.data.category;
     if (!cat) return false;
-    return cat === category || cat.startsWith(`${category}/`);
+    const parts = cat.split('/');
+    const normalizedParts = parts.map(p => p.trim());
+    const targetParts = category!.split('/').map(p => p.trim());
+    if (targetParts.length === 1) {
+      return cat === category || cat.startsWith(`${category}/`);
+    }
+    let currentPath = '';
+    for (let i = 0; i < targetParts.length; i++) {
+      if (i > 0) currentPath += '/';
+      currentPath += targetParts[i];
+      if (cat === currentPath || cat.startsWith(`${currentPath}/`)) {
+        return true;
+      }
+    }
+    return false;
   })
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 

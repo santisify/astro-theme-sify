@@ -1,11 +1,17 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts';
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_COVER } from '@/consts';
 ---
 
-<section class="relative overflow-hidden bg-[#111318]">
+<section class="relative overflow-hidden">
   <div class="absolute inset-0">
-    <div class="absolute inset-0 bg-gradient-to-b from-[#4b6bff]/5 via-transparent to-transparent"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#4b6bff]/[0.03] rounded-full blur-[120px]"></div>
+    <img
+      src={SITE_COVER}
+      alt=""
+      class="w-full h-full object-cover scale-105"
+      aria-hidden="true"
+    />
+    <div class="absolute inset-0 bg-[#111318]/70"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#4b6bff]/[0.03] via-transparent to-transparent"></div>
   </div>
 
   <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-20 sm:pb-24 lg:pb-28">
