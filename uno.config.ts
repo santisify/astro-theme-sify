@@ -38,7 +38,7 @@ export default defineConfig({
       card: 'rounded-xl border border-line bg-paper hover:border-accent/40 transition-colors duration-200',
       // 编辑式眉题（mono 小号大写）
       eyebrow: 'font-mono text-[0.7rem] uppercase tracking-[0.18em] text-faint',
-      container: 'max-w-4xl mx-auto px-5 sm:px-8',
+      container: 'max-w-6xl mx-auto px-5 sm:px-8',
     },
   ],
 });

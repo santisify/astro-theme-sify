@@ -98,7 +98,7 @@ body {
 
 /* ============ 文章排版（prose） ============ */
 .prose {
-  max-width: 42rem;
+  max-width: 46rem;
   font-size: 1rem;
   line-height: 1.85;
   color: var(--ink);

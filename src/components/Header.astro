@@ -13,7 +13,7 @@ const currentPath = Astro.url.pathname;
       </a>
 
       <!-- 桌面导航：mono 小号大写 -->
-      <nav class="hidden md:flex items-center gap-7 font-mono text-xs uppercase tracking-[0.15em]">
+      <nav class="hidden md:flex items-center gap-7 font-mono text-sm uppercase tracking-[0.12em]">
         {siteConfig.nav.map((item) => {
           const isActive = item.link === '/' ? currentPath === '/' : currentPath.startsWith(item.link);
           return (

@@ -50,7 +50,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { month: 'short', day: 'n
 
 <BaseLayout title="归档" description="按时间浏览所有文章">
   <div class="container py-12 sm:py-16">
-    <div class="max-w-[42rem] mx-auto">
+    <div class="max-w-3xl mx-auto">
       <header class="mb-10 border-b border-line pb-6">
         <p class="eyebrow">Archive</p>
         <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">归档</h1>
@@ -58,20 +58,22 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { month: 'short', day: 'n
       </header>
 
       <div class="relative">
-        <div class="absolute left-[3.4rem] top-0 bottom-0 w-px bg-line" aria-hidden="true" />
+        <!-- 时间轴线：left-14 (56px) -->
+        <div class="absolute left-14 top-0 bottom-0 w-px bg-line" aria-hidden="true" />
         {years.map(({ year, months }) => (
           <div class="mb-10">
-            <h2 class="sticky top-16 z-10 bg-paper px-1 py-2 text-lg font-semibold text-ink mb-3 flex items-baseline gap-3">
+            <h2 class="sticky top-16 z-10 bg-paper pl-16 py-2 text-lg font-semibold text-ink mb-3 flex items-baseline gap-3">
               <span class="font-mono text-sm text-accent">{year}</span>
               <span class="text-sm font-normal text-faint">({months.reduce((s, m) => s + m.posts.length, 0)} 篇)</span>
             </h2>
             {months.map(({ month, posts }) => (
               <div class="mb-5">
-                <h3 class="pl-14 py-1 font-mono text-xs uppercase tracking-[0.15em] text-faint">{month}</h3>
+                <h3 class="pl-16 py-1 font-mono text-xs uppercase tracking-[0.15em] text-faint">{month}</h3>
                 <ul class="mt-1">
                   {posts.map((post) => (
-                    <li class="group flex items-baseline gap-4 pl-14 py-2 relative">
-                      <span class="absolute left-[3.32rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-line group-hover:bg-accent transition-colors" aria-hidden="true" />
+                    <li class="group flex items-baseline gap-4 pl-16 py-2 relative">
+                      <!-- 圆点：中心对齐 56px 竖线，右侧留出 5px 余量避免压到日期文字 -->
+                      <span class="absolute left-[3.31rem] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-line group-hover:bg-accent transition-colors" aria-hidden="true" />
                       <span class="font-mono text-xs text-faint w-20 shrink-0 tabular-nums">{dateFormatter.format(post.pubDate)}</span>
                       <a href={`/blog/${post.slug}`}
                          class="text-ink group-hover:text-accent transition-colors line-clamp-1">

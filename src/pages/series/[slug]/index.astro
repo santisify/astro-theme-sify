@@ -28,16 +28,16 @@ const first = seriesPosts[0];
 
 <BaseLayout title={`${first.data.title} 系列`} description={first.data.description}>
   <div class="container py-12 sm:py-16">
-    <div class="max-w-[42rem] mx-auto">
+    <div class="max-w-3xl mx-auto">
       <a href="/series" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors inline-block mb-6">
         ← 返回系列列表
       </a>
       <p class="eyebrow">Series · {seriesPosts.length} 篇</p>
       <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-[-0.02em]">{first.data.title}</h1>
       <p class="mt-4 text-muted leading-relaxed">{first.data.description}</p>
-      <div class="mt-10 space-y-1">
+      <div class="mt-10 space-y-5">
         {seriesPosts.map((p) => (
-          <a href={`/series/${slug}/${p.data.order}`} class="group flex items-baseline gap-5 py-3.5 border-b border-line last:border-0">
+          <a href={`/series/${slug}/${p.data.order}`} class="group flex items-baseline gap-5 py-7 border-b border-line last:border-0">
             <span class="shrink-0 w-8 font-mono text-sm text-faint tabular-nums">{String(p.data.order).padStart(2, '0')}</span>
             <div class="flex-1 min-w-0">
               <p class="font-medium text-ink group-hover:text-accent transition-colors line-clamp-1">{p.data.title}</p>
