@@ -1,4 +1,5 @@
-当前版本为破坏性更新，全程使用deepseek harness搭建
+> [!TIP]
+> 当前版本为破坏性更新，全程使用deepseek harness搭建
 
 # astro-theme-sify
 
