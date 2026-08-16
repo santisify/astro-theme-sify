@@ -1,0 +1,14 @@
+[build]
+  command = "bun run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[dev]
+  command = "bun run dev"
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

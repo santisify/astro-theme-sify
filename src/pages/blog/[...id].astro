@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+import BlogPost from '../../layouts/BlogPost.astro';
+import { entryPath } from '../../utils/content';
+
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+  );
+
+  return posts.map((post, index) => ({
+    params: { id: entryPath(post.id) },
+    props: {
+      post,
+      // 按时间倒序：prev 是较新的文章，next 是较旧的文章
+      prev: posts[index - 1] ?? null,
+      next: posts[index + 1] ?? null,
+    },
+  }));
+}
+
+const { post, prev, next } = Astro.props as {
+  post: CollectionEntry<'blog'>;
+  prev: CollectionEntry<'blog'> | null;
+  next: CollectionEntry<'blog'> | null;
+};
+---
+
+<BlogPost post={post} prev={prev ?? undefined} next={next ?? undefined} />

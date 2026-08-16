@@ -1,0 +1,31 @@
+---
+interface Props {
+  series: {
+    slug: string;
+    title: string;
+    description: string;
+    count: number;
+    cover?: string;
+    lastUpdated?: Date;
+  };
+}
+
+const { series } = Astro.props;
+const lastUpdated = series.lastUpdated
+  ? new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' }).format(series.lastUpdated)
+  : '';
+---
+
+<a href={`/series/${series.slug}`} class="card group block p-6 hover:border-accent/40">
+  {series.cover && (
+    <div class="mb-4 overflow-hidden rounded-lg border border-line">
+      <img src={series.cover} alt={series.title} class="w-full h-36 object-cover group-hover:scale-[1.02] transition-transform duration-300" loading="lazy" />
+    </div>
+  )}
+  <h2 class="text-lg font-semibold text-ink group-hover:text-accent transition-colors line-clamp-1">{series.title}</h2>
+  <p class="text-sm text-muted mt-1.5 line-clamp-2">{series.description}</p>
+  <div class="mt-4 flex items-center justify-between font-mono text-xs uppercase tracking-[0.12em] text-faint">
+    <span>{series.count} 篇</span>
+    {lastUpdated && <span>{lastUpdated}</span>}
+  </div>
+</a>

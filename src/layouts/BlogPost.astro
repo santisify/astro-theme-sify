@@ -1,0 +1,142 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import { siteConfig } from '../site.config';
+import { entryPath } from '../utils/content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  prev?: CollectionEntry<'blog'>;
+  next?: CollectionEntry<'blog'>;
+}
+
+const { post, prev, next } = Astro.props;
+const postUrl = `/blog/${entryPath(post.id)}`;
+const pubDate = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(post.data.pubDate);
+const updatedDate = post.data.updatedDate
+  ? new Intl.DateTimeFormat('zh-CN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(post.data.updatedDate)
+  : null;
+// 阅读时长：中文约 400 字/分钟
+const readingMinutes = Math.max(1, Math.round(post.body.length / 400));
+
+const { Content } = await render(post);
+
+// JSON-LD: BlogPosting 结构化数据
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified: post.data.updatedDate ? post.data.updatedDate.toISOString() : post.data.pubDate.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: siteConfig.site.author,
+  },
+  publisher: {
+    '@type': 'Person',
+    name: siteConfig.site.author,
+  },
+  url: new URL(postUrl, siteConfig.site.url).href,
+  ...(post.data.cover ? { image: new URL(post.data.cover, siteConfig.site.url).href } : {}),
+});
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.cover} jsonLd={jsonLd}>
+  <div class="container py-12 sm:py-16">
+    <div class="max-w-[42rem] mx-auto">
+      <!-- Back -->
+      <a href="/blog" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors">
+        ← 返回博客
+      </a>
+
+      <!-- Article header -->
+      <article>
+        <header class="mt-10 mb-12">
+          {post.data.category && (
+            <a
+              href={`/tags/${encodeURIComponent(post.data.category)}`}
+              class="inline-block mb-5 font-mono text-xs uppercase tracking-[0.15em] text-accent hover:text-accent2 transition-colors"
+            >
+              /{post.data.category}
+            </a>
+          )}
+          <h1 class="text-3xl sm:text-4xl font-bold leading-[1.2] tracking-[-0.02em] text-ink">
+            {post.data.title}
+          </h1>
+          <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs uppercase tracking-[0.12em] text-faint">
+            <time datetime={post.data.pubDate.toISOString()}>{pubDate}</time>
+            <span aria-hidden="true">·</span>
+            <span>{readingMinutes} 分钟阅读</span>
+            {updatedDate && (
+              <>
+                <span aria-hidden="true">·</span>
+                <time datetime={post.data.updatedDate!.toISOString()}>更新于 {updatedDate}</time>
+              </>
+            )}
+          </div>
+          {post.data.tags.length > 0 && (
+            <div class="mt-6 flex flex-wrap gap-2">
+              {post.data.tags.map((tag) => (
+                <a
+                  href={`/tags/${encodeURIComponent(tag)}`}
+                  class="px-2.5 py-1 rounded-md bg-accentsoft text-accent text-xs hover:bg-accent hover:text-paper transition-colors"
+                >
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          )}
+        </header>
+
+        {post.data.cover && (
+          <div class="mb-10 overflow-hidden rounded-xl border border-line">
+            <img src={post.data.cover} alt={post.data.title} class="w-full max-h-96 object-cover" loading="lazy" />
+          </div>
+        )}
+
+        <!-- Article content -->
+        <div class="prose">
+          <Content />
+        </div>
+      </article>
+
+      <!-- 结尾标签 -->
+      <div class="mt-14 flex flex-wrap gap-2 border-t border-line pt-8">
+        {post.data.tags.map((tag) => (
+          <a
+            href={`/tags/${encodeURIComponent(tag)}`}
+            class="font-mono text-xs uppercase tracking-[0.12em] text-faint hover:text-accent transition-colors"
+          >
+            #{tag}
+          </a>
+        ))}
+      </div>
+
+      <!-- Navigation -->
+      <nav class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-line pt-8">
+        {prev ? (
+          <a href={`/blog/${entryPath(prev.id)}`} class="group">
+            <p class="font-mono text-xs uppercase tracking-[0.15em] text-faint group-hover:text-accent transition-colors">← 上一篇</p>
+            <p class="mt-2 font-medium text-ink group-hover:text-accent transition-colors line-clamp-2">{prev.data.title}</p>
+          </a>
+        ) : <div />}
+        {next ? (
+          <a href={`/blog/${entryPath(next.id)}`} class="group sm:text-right">
+            <p class="font-mono text-xs uppercase tracking-[0.15em] text-faint group-hover:text-accent transition-colors">下一篇 →</p>
+            <p class="mt-2 font-medium text-ink group-hover:text-accent transition-colors line-clamp-2">{next.data.title}</p>
+          </a>
+        ) : <div />}
+      </nav>
+    </div>
+  </div>
+</BaseLayout>

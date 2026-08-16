@@ -1,0 +1,121 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { siteConfig } from '../site.config';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+const seriesPosts = await getCollection('series', ({ data }) => !data.draft);
+const latest = allPosts.slice(0, 6);
+
+// 系列分组（按子目录名）
+const seriesMap = new Map<string, typeof seriesPosts>();
+for (const post of seriesPosts.sort((a, b) => a.data.order - b.data.order)) {
+  const slug = post.id.split('/')[0];
+  if (!seriesMap.has(slug)) seriesMap.set(slug, []);
+  seriesMap.get(slug)!.push(post);
+}
+const seriesList = [...seriesMap.entries()]
+  .map(([slug, posts]) => ({
+    slug,
+    title: posts[0].data.title,
+    description: posts[0].data.description,
+    count: posts.length,
+  }))
+  .sort((a, b) => b.count - a.count);
+
+const tagCount = new Set(allPosts.flatMap((p) => p.data.tags)).size;
+---
+
+<BaseLayout title="首页" description={siteConfig.site.description}>
+  <!-- ===== Hero ===== -->
+  <section class="container pt-16 sm:pt-24 pb-14 sm:pb-20">
+    <p class="eyebrow flex items-center gap-2">
+      <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+      Personal notes · since 2026
+    </p>
+    <h1 class="mt-6 text-[2.6rem] leading-[1.12] sm:text-6xl font-bold tracking-[-0.03em] text-ink">
+      你好，我是 Sify。
+    </h1>
+    <p class="mt-5 font-serif italic text-2xl sm:text-3xl text-muted">
+      notes on code, systems &amp; life.
+    </p>
+    <p class="mt-8 max-w-xl text-muted leading-relaxed">
+      记录技术学习与生活感悟 —— 从语言语法到系统架构，从踩坑笔记到系列教程。
+    </p>
+    <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-xs uppercase tracking-[0.15em] text-faint">
+      <span>{allPosts.length} 篇文章</span>
+      <span>{seriesList.length} 个系列</span>
+      <span>{tagCount} 个标签</span>
+      <a href="/blog" class="text-accent hover:text-accent2 transition-colors link-sweep">
+        浏览博客 →
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== 最新文章 ===== -->
+  <section class="container pb-14 sm:pb-20">
+    <div class="flex items-end justify-between mb-6 border-b border-line pb-4">
+      <div>
+        <p class="eyebrow">Latest notes</p>
+        <h2 class="mt-2 text-2xl font-semibold tracking-[-0.01em]">最新文章</h2>
+      </div>
+      <a href="/blog" class="font-mono text-xs uppercase tracking-[0.15em] text-muted hover:text-accent transition-colors">
+        查看全部 →
+      </a>
+    </div>
+
+    <div>
+      {latest.map((post, i) => (
+        <PostCard post={post} index={i + 1} />
+      ))}
+    </div>
+  </section>
+
+  <!-- ===== 系列教程 ===== -->
+  {seriesList.length > 0 && (
+    <section class="container pb-14 sm:pb-20">
+      <div class="flex items-end justify-between mb-6 border-b border-line pb-4">
+        <div>
+          <p class="eyebrow">Series</p>
+          <h2 class="mt-2 text-2xl font-semibold tracking-[-0.01em]">系列教程</h2>
+        </div>
+        <a href="/series" class="font-mono text-xs uppercase tracking-[0.15em] text-muted hover:text-accent transition-colors">
+          查看全部 →
+        </a>
+      </div>
+
+      <div class="space-y-3">
+        {seriesList.map((s) => (
+          <a
+            href={`/series/${s.slug}`}
+            class="group flex items-baseline gap-4 py-4 border-b border-line last:border-0"
+          >
+            <span class="font-mono text-sm text-faint w-8 shrink-0 tabular-nums">{String(s.count).padStart(2, '0')}</span>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-ink group-hover:text-accent transition-colors line-clamp-1">{s.title}</p>
+              <p class="text-sm text-muted line-clamp-1 mt-0.5">{s.description}</p>
+            </div>
+            <span class="font-mono text-xs text-faint shrink-0">{s.count} 篇</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- ===== 关于 ===== -->
+  <section class="container pb-20">
+    <div class="rounded-xl border border-line bg-paper2/60 p-8 sm:p-10">
+      <p class="eyebrow">About</p>
+      <h2 class="mt-2 text-2xl font-semibold tracking-[-0.01em]">关于我</h2>
+      <p class="mt-4 max-w-2xl text-muted leading-relaxed">
+        一名热爱技术的全栈开发者，关注前端工程化、系统设计与工具链。这个博客记录我的学习路径、踩坑经验与思考。
+      </p>
+      <a href="/about" class="mt-6 inline-flex items-center gap-1.5 font-medium text-accent hover:text-accent2 transition-colors link-sweep">
+        了解更多 →
+      </a>
+    </div>
+  </section>
+</BaseLayout>

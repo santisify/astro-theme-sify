@@ -1,0 +1,127 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  post: CollectionEntry<'series'>;
+  seriesInfo: {
+    slug: string;
+    title: string;
+    description: string;
+    posts: CollectionEntry<'series'>[];
+  };
+  prev?: CollectionEntry<'series'>;
+  next?: CollectionEntry<'series'>;
+}
+
+const { post, seriesInfo, prev, next } = Astro.props;
+const currentIdx = seriesInfo.posts.findIndex((p) => p.id === post.id);
+const currentIndex = currentIdx + 1;
+const total = seriesInfo.posts.length;
+
+const pubDate = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(post.data.pubDate);
+const readingMinutes = Math.max(1, Math.round(post.body.length / 400));
+
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} — ${seriesInfo.title}`} description={post.data.description}>
+  <div class="container py-12 sm:py-16">
+    <div class="flex gap-10">
+      <!-- Sidebar: TOC -->
+      <aside class="hidden lg:block w-56 shrink-0">
+        <div class="sticky top-20">
+          <a href={`/series/${seriesInfo.slug}`} class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors block mb-5">
+            ← 返回系列
+          </a>
+          <p class="eyebrow mb-3">{seriesInfo.title}</p>
+          <nav class="border-l border-line">
+            {seriesInfo.posts.map((p) => (
+              <a
+                href={`/series/${seriesInfo.slug}/${p.data.order}`}
+                class:list={[
+                  'flex items-baseline gap-2 pl-4 py-1.5 text-sm border-l-2 -ml-px transition-colors',
+                  p.id === post.id
+                    ? 'border-accent text-accent font-medium'
+                    : 'border-transparent text-muted hover:text-ink hover:border-faint',
+                ]}
+              >
+                <span class="font-mono text-xs text-faint">{p.data.order}</span>
+                <span class="line-clamp-1">{p.data.title}</span>
+              </a>
+            ))}
+          </nav>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1 min-w-0 max-w-[42rem]">
+        <!-- Mobile TOC -->
+        <details class="lg:hidden mb-6">
+          <summary class="cursor-pointer font-mono text-xs uppercase tracking-[0.15em] text-muted hover:text-accent transition-colors py-1">
+            目录 {currentIndex}/{total}
+          </summary>
+          <nav class="mt-2 border border-line rounded-lg p-3 text-sm">
+            {seriesInfo.posts.map((p) => (
+              <a
+                href={`/series/${seriesInfo.slug}/${p.data.order}`}
+                class:list={[
+                  'flex items-baseline gap-2 py-1.5 px-2 rounded transition-colors',
+                  p.id === post.id ? 'bg-accentsoft text-accent font-medium' : 'text-muted hover:bg-paper2',
+                ]}
+              >
+                <span class="font-mono text-xs text-faint">{p.data.order}</span>
+                <span>{p.data.title}</span>
+              </a>
+            ))}
+          </nav>
+        </details>
+
+        <a href={`/series/${seriesInfo.slug}`} class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors inline-block mb-2">
+          {seriesInfo.title}
+        </a>
+        <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-8">
+          第 {currentIndex} / {total} 篇
+        </p>
+
+        <article>
+          <header class="mb-10">
+            <h1 class="text-3xl sm:text-4xl font-bold leading-[1.2] tracking-[-0.02em] text-ink mb-4">
+              {post.data.title}
+            </h1>
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs uppercase tracking-[0.12em] text-faint">
+              <time datetime={post.data.pubDate.toISOString()}>{pubDate}</time>
+              <span aria-hidden="true">·</span>
+              <span>{readingMinutes} 分钟阅读</span>
+            </div>
+          </header>
+
+          <div class="prose">
+            <Content />
+          </div>
+        </article>
+
+        {/* Navigation */}
+        <nav class="mt-14 grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-line pt-8">
+          {prev ? (
+            <a href={`/series/${seriesInfo.slug}/${prev.data.order}`} class="group">
+              <p class="font-mono text-xs uppercase tracking-[0.15em] text-faint group-hover:text-accent transition-colors">← 上一篇</p>
+              <p class="mt-2 font-medium text-ink group-hover:text-accent transition-colors line-clamp-2">{prev.data.title}</p>
+            </a>
+          ) : <div />}
+          {next ? (
+            <a href={`/series/${seriesInfo.slug}/${next.data.order}`} class="group sm:text-right">
+              <p class="font-mono text-xs uppercase tracking-[0.15em] text-faint group-hover:text-accent transition-colors">下一篇 →</p>
+              <p class="mt-2 font-medium text-ink group-hover:text-accent transition-colors line-clamp-2">{next.data.title}</p>
+            </a>
+          ) : <div />}
+        </nav>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

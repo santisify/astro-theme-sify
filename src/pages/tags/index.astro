@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TagBadge from '../../components/TagBadge.astro';
+
+type TagCount = { tag: string; count: number };
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const tagMap = new Map<string, number>();
+for (const post of allPosts) {
+  for (const tag of post.data.tags) {
+    tagMap.set(tag, (tagMap.get(tag) ?? 0) + 1);
+  }
+}
+
+const tags: TagCount[] = [...tagMap.entries()]
+  .map(([tag, count]) => ({ tag, count }))
+  .sort((a, b) => b.count - a.count);
+
+const maxCount = tags.length ? tags[0].count : 1;
+const minCount = tags.length ? tags[tags.length - 1].count : 1;
+
+function tagSize(count: number): string {
+  if (maxCount === minCount) return 'text-sm';
+  const ratio = (count - minCount) / (maxCount - minCount);
+  if (ratio > 0.75) return 'text-xl font-bold';
+  if (ratio > 0.5) return 'text-lg font-semibold';
+  if (ratio > 0.25) return 'text-base';
+  return 'text-sm';
+}
+---
+
+<BaseLayout title="标签" description="按标签浏览文章">
+  <div class="container py-12 sm:py-16">
+    <header class="mb-10 border-b border-line pb-6">
+      <p class="eyebrow">Tags</p>
+      <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">标签</h1>
+      <p class="mt-2 text-sm text-muted">共 {tags.length} 个标签</p>
+    </header>
+
+    <div class="flex flex-wrap gap-3 items-center">
+      {tags.map(({ tag, count }) => (
+        <a
+          href={`/tags/${encodeURIComponent(tag)}`}
+          class:list={[
+            'px-3 py-1.5 rounded-md border border-line text-muted hover:text-accent hover:border-accent/50 transition-all',
+            tagSize(count),
+          ]}
+        >
+          {tag}
+          <span class="ml-1.5 font-mono text-xs text-faint">({count})</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

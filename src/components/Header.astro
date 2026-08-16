@@ -1,0 +1,93 @@
+---
+import { siteConfig } from '../site.config';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-line bg-paper/85 backdrop-blur-md transition-colors">
+  <div class="container">
+    <div class="flex h-16 items-center justify-between">
+      <!-- Wordmark：衬线斜体 -->
+      <a href="/" class="font-serif italic text-xl font-medium text-ink hover:text-accent transition-colors">
+        Sify<span class="text-accent">.</span>
+      </a>
+
+      <!-- 桌面导航：mono 小号大写 -->
+      <nav class="hidden md:flex items-center gap-7 font-mono text-xs uppercase tracking-[0.15em]">
+        {siteConfig.nav.map((item) => {
+          const isActive = item.link === '/' ? currentPath === '/' : currentPath.startsWith(item.link);
+          return (
+            <a
+              href={item.link}
+              class:list={[
+                'py-1 transition-colors',
+                isActive ? 'text-accent border-b border-accent' : 'text-muted hover:text-ink',
+              ]}
+            >
+              {item.text}
+            </a>
+          );
+        })}
+      </nav>
+
+      <div class="flex items-center gap-1">
+        <!-- 主题切换 -->
+        <button
+          id="theme-toggle"
+          type="button"
+          aria-label="切换深浅色主题"
+          title="切换深浅色主题"
+          class="p-2 rounded-md text-muted hover:text-ink hover:bg-paper2 transition-colors cursor-pointer"
+        >
+          <!-- 太阳（暗色时显示） -->
+          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- 月亮（亮色时显示） -->
+          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <!-- 移动端菜单 -->
+        <details class="md:hidden relative">
+          <summary class="cursor-pointer p-2 rounded-md text-muted hover:text-ink hover:bg-paper2 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </summary>
+          <ul class="absolute right-0 top-12 w-48 py-2 rounded-lg border border-line bg-paper shadow-sm z-50">
+            {siteConfig.nav.map((item) => {
+              const isActive = item.link === '/' ? currentPath === '/' : currentPath.startsWith(item.link);
+              return (
+                <li>
+                  <a
+                    href={item.link}
+                    class:list={['block px-4 py-2 text-sm transition-colors', isActive ? 'text-accent' : 'text-muted hover:text-ink']}
+                  >
+                    {item.text}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    var toggle = document.getElementById('theme-toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', function () {
+      var isDark = document.documentElement.classList.toggle('dark');
+      try {
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      } catch (e) {
+        /* ignore */
+      }
+    });
+  })();
+</script>

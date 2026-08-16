@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import Pagination from '../../components/Pagination.astro';
+
+export const POSTS_PER_PAGE = 10;
+
+interface Props {
+  page: number;
+  totalPages: number;
+  totalPosts: number;
+  posts: CollectionEntry<'blog'>[];
+}
+
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+  const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+  );
+  const totalPages = Math.max(1, Math.ceil(allPosts.length / POSTS_PER_PAGE));
+
+  const paths: GetStaticPathsResult = [];
+  for (let page = 1; page <= totalPages; page++) {
+    paths.push({
+      params: { page: page === 1 ? undefined : String(page) },
+      props: {
+        page,
+        totalPages,
+        totalPosts: allPosts.length,
+        posts: allPosts.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE),
+      },
+    });
+  }
+  return paths;
+}
+
+const { page, totalPages, totalPosts, posts } = Astro.props as Props;
+const title = page === 1 ? '博客' : `博客 - 第 ${page} 页`;
+const startIndex = (page - 1) * POSTS_PER_PAGE;
+---
+
+<BaseLayout title={title} description="技术笔记与文章">
+  <div class="container py-12 sm:py-16">
+    <header class="mb-8 border-b border-line pb-6">
+      <p class="eyebrow">All notes</p>
+      <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">博客</h1>
+      <p class="mt-2 text-sm text-muted">
+        共 {totalPosts} 篇文章
+        {totalPages > 1 && <span class="font-mono">· 第 {page}/{totalPages} 页</span>}
+      </p>
+    </header>
+
+    {posts.length > 0 ? (
+      <div>
+        {posts.map((post, i) => (
+          <PostCard post={post} index={startIndex + i + 1} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-muted">暂无文章</p>
+    )}
+
+    {totalPages > 1 && <Pagination currentPage={page} totalPages={totalPages} basePath="/blog" />}
+  </div>
+</BaseLayout>

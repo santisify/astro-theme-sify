@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const skills = [
+  { category: '前端', items: ['TypeScript', 'Astro', 'React', 'Vue', 'UnoCSS', 'Tailwind CSS'] },
+  { category: '后端', items: ['Node.js', 'Go', 'Python', 'PostgreSQL', 'Redis'] },
+  { category: '工具', items: ['Git', 'Docker', 'Bun', 'Linux', 'Figma'] },
+];
+
+const experiences = [
+  { year: '2024 — 至今', title: '前端工程师', company: '某科技公司' },
+  { year: '2022 — 2024', title: '全栈开发者', company: '某创业公司' },
+  { year: '2018 — 2022', title: '计算机科学学士', company: '某大学' },
+];
+---
+
+<BaseLayout title="关于我" description="了解更多关于作者的信息">
+  <div class="container py-12 sm:py-16">
+    <div class="max-w-[42rem] mx-auto">
+      <!-- Header -->
+      <header class="mb-14">
+        <p class="eyebrow">About</p>
+        <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-[-0.02em]">你好，我是 Sify</h1>
+        <p class="mt-4 text-muted leading-relaxed">
+          一名热爱技术的全栈开发者，专注于构建优雅的用户体验和高效的系统架构。
+        </p>
+        <div class="mt-8 flex items-center gap-6">
+          <img src="/images/avatar.svg" alt="头像" class="w-20 h-20 rounded-2xl border border-line" />
+          <div class="flex gap-3">
+            <a href="https://github.com/santisify" target="_blank" rel="noopener noreferrer"
+               class="btn btn-outline">
+              GitHub
+            </a>
+            <a href="mailto:santisify@example.com" class="btn">
+              邮件联系
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Skills -->
+      <section class="mb-14">
+        <h2 class="text-xl font-semibold tracking-[-0.01em] mb-5">技能栈</h2>
+        <div class="grid gap-4 md:grid-cols-3">
+          {skills.map(({ category, items }) => (
+            <div class="card p-5">
+              <h3 class="font-mono text-xs uppercase tracking-[0.15em] text-faint mb-3">{category}</h3>
+              <div class="flex flex-wrap gap-2">
+                {items.map((item) => (
+                  <span class="px-2 py-0.5 text-xs rounded-md bg-accentsoft text-accent">{item}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Experience -->
+      <section>
+        <h2 class="text-xl font-semibold tracking-[-0.01em] mb-5">经历</h2>
+        <div class="space-y-5">
+          {experiences.map(({ year, title, company }) => (
+            <div class="flex gap-5 items-baseline">
+              <span class="font-mono text-xs text-faint w-32 shrink-0 pt-0.5">{year}</span>
+              <div class="flex-1 pb-5 border-b border-line last:border-0">
+                <p class="font-medium text-ink">{title}</p>
+                <p class="text-sm text-muted mt-0.5">{company}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

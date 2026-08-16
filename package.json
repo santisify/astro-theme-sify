@@ -1,0 +1,28 @@
+{
+  "name": "astro-theme-sify",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "基于 Astro 7 + TypeScript + UnoCSS 的个人博客主题",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.2"
+  },
+  "devDependencies": {
+    "@unocss/astro": "^66.7.5",
+    "@unocss/preset-attributify": "^66.7.5",
+    "@unocss/preset-wind4": "^66.7.5",
+    "typescript": "7.0",
+    "unocss": "^66.7.5"
+  }
+}

@@ -1,0 +1,99 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { entryPath } from '../../utils/content';
+
+type SearchPost = {
+  slug: string;
+  title: string;
+  description: string;
+  tags: string[];
+  pubDate: string;
+};
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts: SearchPost[] = allPosts.map((p) => ({
+  slug: entryPath(p.id),
+  title: p.data.title,
+  description: p.data.description,
+  tags: p.data.tags,
+  pubDate: p.data.pubDate.toISOString(),
+}));
+---
+
+<BaseLayout title="搜索" description="搜索博客文章">
+  <div class="container py-12 sm:py-16">
+    <div class="max-w-[42rem] mx-auto">
+      <header class="mb-10 border-b border-line pb-6">
+        <p class="eyebrow">Search</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">搜索文章</h1>
+      </header>
+
+      <div class="relative mb-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-4 text-faint" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          id="search-input"
+          type="text"
+          placeholder="输入关键词，如 Go / 并发 / Astro..."
+          class="w-full pl-7 pb-3 bg-transparent text-ink placeholder-faint border-b-2 border-line focus:outline-none focus:border-accent transition-colors"
+        />
+      </div>
+
+      <div id="search-results" class="space-y-1">
+        <p class="text-sm text-faint py-4">输入关键词开始搜索</p>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ posts }}>
+    // posts 由 Astro 的 define:vars 在构建期序列化注入
+    const input = document.getElementById('search-input');
+    const results = document.getElementById('search-results');
+
+    function renderRow(p, i) {
+      const date = new Date(p.pubDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' });
+      const tagsHtml = p.tags
+        .slice(0, 3)
+        .map(function (t) { return '<span class="group-hover:text-accent transition-colors">#' + t + '</span>'; })
+        .join('');
+      return (
+        '<a href="/blog/' + p.slug + '" class="group flex items-baseline gap-4 py-4 border-b border-line">' +
+          '<span class="font-mono text-sm text-faint w-8 shrink-0 tabular-nums">' + String(i + 1).padStart(2, '0') + '</span>' +
+          '<span class="flex-1 min-w-0">' +
+            '<span class="block font-medium text-ink group-hover:text-accent transition-colors line-clamp-1">' + p.title + '</span>' +
+            '<span class="block text-sm text-muted line-clamp-1 mt-0.5">' + p.description + '</span>' +
+            '<span class="flex flex-wrap gap-x-3 mt-1.5 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-faint">' + tagsHtml + '</span>' +
+          '</span>' +
+          '<time class="font-mono text-xs text-faint shrink-0">' + date + '</time>' +
+        '</a>'
+      );
+    }
+
+    if (input && results) {
+      input.addEventListener('input', function (e) {
+        const query = e.target.value.trim().toLowerCase();
+        if (!query) {
+          results.innerHTML = '<p class="text-sm text-faint py-4">输入关键词开始搜索</p>';
+          return;
+        }
+
+        const matched = posts.filter(function (p) {
+          return (
+            p.title.toLowerCase().includes(query) ||
+            p.description.toLowerCase().includes(query) ||
+            p.tags.some(function (t) { return t.toLowerCase().includes(query); })
+          );
+        });
+
+        if (matched.length === 0) {
+          results.innerHTML = '<p class="text-sm text-faint py-4">未找到相关文章，换个关键词试试？</p>';
+          return;
+        }
+
+        results.innerHTML = matched.map(renderRow).join('');
+      });
+    }
+  </script>
+</BaseLayout>

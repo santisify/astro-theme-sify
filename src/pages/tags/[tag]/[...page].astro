@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import Pagination from '../../../components/Pagination.astro';
+
+export const POSTS_PER_PAGE = 10;
+
+interface Props {
+  tag: string;
+  page: number;
+  totalPages: number;
+  totalPosts: number;
+  posts: CollectionEntry<'blog'>[];
+}
+
+export async function getStaticPaths(): Promise<GetStaticPathsResult> {
+  const allPosts = await getCollection('blog');
+
+  // 收集所有标签
+  const tagSet = new Set<string>();
+  for (const post of allPosts) {
+    for (const tag of post.data.tags) tagSet.add(tag);
+  }
+
+  const paths: GetStaticPathsResult = [];
+  for (const tag of tagSet) {
+    const posts = allPosts
+      .filter((p) => p.data.tags.includes(tag) && !p.data.draft)
+      .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+    const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+
+    for (let page = 1; page <= totalPages; page++) {
+      paths.push({
+        params: { tag, page: page === 1 ? undefined : String(page) },
+        props: {
+          tag,
+          page,
+          totalPages,
+          totalPosts: posts.length,
+          posts: posts.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE),
+        },
+      });
+    }
+  }
+  return paths;
+}
+
+const { tag, page, totalPages, totalPosts, posts } = Astro.props as Props;
+const title = page === 1 ? `标签：${tag}` : `标签：${tag} - 第 ${page} 页`;
+const startIndex = (page - 1) * POSTS_PER_PAGE;
+---
+
+<BaseLayout title={title} description={`标签为 ${tag} 的文章`}>
+  <div class="container py-12 sm:py-16">
+    <div class="max-w-[42rem] mx-auto">
+      <a href="/tags" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors inline-block mb-6">
+        ← 返回标签列表
+      </a>
+      <header class="mb-8 border-b border-line pb-6">
+        <p class="eyebrow">Tagged</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">#{tag}</h1>
+        <p class="mt-2 text-sm text-muted">
+          共 {totalPosts} 篇文章
+          {totalPages > 1 && <span class="font-mono">· 第 {page}/{totalPages} 页</span>}
+        </p>
+      </header>
+
+      <div>
+        {posts.map((post, i) => (
+          <PostCard post={post} index={startIndex + i + 1} />
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <Pagination currentPage={page} totalPages={totalPages} basePath={`/tags/${encodeURIComponent(tag)}`} />
+      )}
+    </div>
+  </div>
+</BaseLayout>

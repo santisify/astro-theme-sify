@@ -1,0 +1,23 @@
+---
+interface Props {
+  name: string;
+  url: string;
+  avatar: string;
+  desc: string;
+}
+
+const { name, url, avatar, desc } = Astro.props;
+---
+
+<a href={url} target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 p-4 rounded-lg hover:bg-paper2 transition-colors group border-b border-line last:border-0">
+  <div class="w-10 h-10 rounded-full overflow-hidden border border-line bg-accentsoft shrink-0 flex items-center justify-center font-mono font-bold text-accent">
+    {avatar ? <img src={avatar} alt={name} class="w-full h-full object-cover" /> : name[0]}
+  </div>
+  <div class="flex-1 min-w-0">
+    <p class="font-medium text-ink group-hover:text-accent transition-colors truncate">{name}</p>
+    <p class="text-sm text-muted truncate">{desc}</p>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-faint group-hover:text-accent transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+  </svg>
+</a>

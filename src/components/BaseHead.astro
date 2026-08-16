@@ -1,0 +1,58 @@
+---
+import { siteConfig } from '../site.config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  /** 注入到 head 中的 JSON-LD 结构化数据（JSON 字符串） */
+  jsonLd?: string;
+}
+
+const { title, description, image, jsonLd } = Astro.props;
+const siteTitle = siteConfig.site.title;
+const pageTitle = title ? `${title} — ${siteTitle}` : siteTitle;
+const metaDesc = description || siteConfig.site.description;
+const metaImage = `${siteConfig.site.url}${image || '/images/og-default.svg'}`;
+const currentUrl = new URL(Astro.url.pathname, siteConfig.site.url).href;
+---
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={metaDesc} />
+  <meta name="generator" content={Astro.generator} />
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="canonical" href={currentUrl} />
+  <link rel="alternate" type="application/rss+xml" title={siteTitle} href="/rss.xml" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Fonts: Inter(正文) / Newsreader(衬线点缀) / JetBrains Mono(编号与元信息) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={siteTitle} />
+  <meta property="og:url" content={currentUrl} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={metaDesc} />
+  <meta property="og:image" content={metaImage} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={metaDesc} />
+  <meta name="twitter:image" content={metaImage} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" />
+
+  {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+</head>

@@ -1,0 +1,60 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SeriesCard from '../../components/SeriesCard.astro';
+
+type SeriesGroup = {
+  slug: string;
+  title: string;
+  description: string;
+  posts: CollectionEntry<'series'>[];
+  cover?: string;
+  lastUpdated?: Date;
+};
+
+const allPosts = await getCollection('series', ({ data }) => !data.draft);
+const sorted = allPosts.sort((a, b) => a.data.order - b.data.order);
+
+// Group by series slug (first path segment)
+const groups = new Map<string, CollectionEntry<'series'>[]>();
+for (const post of sorted) {
+  const parts = post.id.split('/');
+  const seriesSlug = parts[0];
+  if (!groups.has(seriesSlug)) groups.set(seriesSlug, []);
+  groups.get(seriesSlug)!.push(post);
+}
+
+const seriesList: SeriesGroup[] = [];
+for (const [slug, posts] of groups) {
+  const sortedPosts = posts.sort((a, b) => a.data.order - b.data.order);
+  const first = sortedPosts[0];
+  const last = sortedPosts[sortedPosts.length - 1];
+  seriesList.push({
+    slug,
+    title: first.data.title,
+    description: first.data.description,
+    posts: sortedPosts,
+    cover: first.data.cover,
+    lastUpdated: last.data.pubDate,
+  });
+}
+
+seriesList.sort((a, b) => (b.lastUpdated?.getTime() ?? 0) - (a.lastUpdated?.getTime() ?? 0));
+---
+
+<BaseLayout title="系列教程" description="系统化的技术学习路径">
+  <div class="container py-12 sm:py-16">
+    <header class="mb-10 border-b border-line pb-6">
+      <p class="eyebrow">Series</p>
+      <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">系列教程</h1>
+      <p class="mt-2 text-sm text-muted">共 {seriesList.length} 个系列，{sorted.length} 篇文章</p>
+    </header>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      {seriesList.map((series) => (
+        <SeriesCard series={series} />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

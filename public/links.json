@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Astro 官方",
+    "url": "https://astro.build",
+    "avatar": "",
+    "desc": "Astro 官网，现代前端框架",
+    "category": "推荐"
+  },
+  {
+    "name": "UnoCSS",
+    "url": "https://unocss.dev",
+    "avatar": "",
+    "desc": "即时按需原子 CSS 引擎",
+    "category": "推荐"
+  },
+  {
+    "name": "TypeScript",
+    "url": "https://www.typescriptlang.org",
+    "avatar": "",
+    "desc": "JavaScript 的超集",
+    "category": "推荐"
+  },
+  {
+    "name": "示例博客",
+    "url": "https://example.com",
+    "avatar": "",
+    "desc": "一个示例个人博客",
+    "category": "社区"
+  }
+]

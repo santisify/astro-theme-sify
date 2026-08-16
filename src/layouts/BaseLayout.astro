@@ -1,0 +1,43 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { siteConfig } from '../site.config';
+import '../assets/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  /** 注入到 head 中的 JSON-LD 结构化数据（JSON 字符串） */
+  jsonLd?: string;
+}
+
+const { title, description, image, jsonLd } = Astro.props;
+---
+
+<!doctype html>
+<html lang={siteConfig.site.language}>
+  <head>
+    <!-- 首屏前应用主题，避免闪烁 -->
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem('theme');
+          const dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.classList.toggle('dark', dark);
+        } catch (e) {
+          /* ignore */
+        }
+      })();
+    </script>
+    <BaseHead title={title} description={description} image={image} jsonLd={jsonLd} />
+  </head>
+  <body class="flex flex-col min-h-screen bg-paper text-ink font-sans antialiased transition-colors">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { entryPath } from '../utils/content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  /** 列表序号（可选，用于索引式列表） */
+  index?: number;
+}
+
+const { post, index } = Astro.props;
+const postUrl = `/blog/${entryPath(post.id)}`;
+const pubDate = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+}).format(post.data.pubDate);
+---
+
+<article class="group flex items-baseline gap-4 py-4 border-b border-line last:border-0">
+  {index !== undefined && (
+    <span class="font-mono text-sm text-faint w-8 shrink-0 tabular-nums select-none">
+      {String(index).padStart(2, '0')}
+    </span>
+  )}
+  <a href={postUrl} class="flex-1 min-w-0">
+    <h2 class="font-medium text-ink group-hover:text-accent transition-colors line-clamp-1">
+      {post.data.title}
+    </h2>
+    <p class="text-sm text-muted line-clamp-1 mt-0.5">
+      {post.data.description}
+    </p>
+    {post.data.tags.length > 0 && (
+      <p class="flex flex-wrap gap-x-3 gap-y-1 mt-1.5 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-faint">
+        {post.data.tags.slice(0, 3).map((tag) => (
+          <span class="group-hover:text-accent transition-colors">#{tag}</span>
+        ))}
+      </p>
+    )}
+  </a>
+  <time datetime={post.data.pubDate.toISOString()} class="font-mono text-xs text-faint shrink-0">
+    {pubDate}
+  </time>
+</article>

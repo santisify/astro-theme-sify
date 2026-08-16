@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/projects/ProjectCard.astro';
+
+const projects = [
+  {
+    name: 'astro-theme-sify',
+    description: '基于 Astro 7 + UnoCSS 的个人博客主题，支持博客、系列教程、标签、归档等完整功能。',
+    tech: ['Astro', 'TypeScript', 'UnoCSS'],
+    link: 'https://github.com/santisify/astro-theme-sify',
+    cover: '/images/project-blog.svg',
+  },
+  {
+    name: '某数据可视化平台',
+    description: '企业级数据仪表盘，支持多维度数据分析与实时图表渲染。',
+    tech: ['Vue', 'D3.js', 'Go'],
+    link: '#',
+  },
+  {
+    name: 'CLI 工具集',
+    description: '一系列高效的命令行工具，用于提升开发工作效率。',
+    tech: ['Go', 'Cobra', 'TUI'],
+    link: '#',
+  },
+  {
+    name: '个人主页',
+    description: '使用 Astro 构建的个人展示页面，包含项目展示和技能介绍。',
+    tech: ['Astro', 'UnoCSS'],
+    link: '#',
+  },
+];
+---
+
+<BaseLayout title="项目" description="我的开源项目和工作成果">
+  <div class="container py-12 sm:py-16">
+    <header class="mb-10 border-b border-line pb-6">
+      <p class="eyebrow">Projects</p>
+      <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">项目</h1>
+      <p class="mt-2 text-sm text-muted">展示我的部分项目和工作成果</p>
+    </header>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      {projects.map((p) => (
+        <ProjectCard {...p} />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

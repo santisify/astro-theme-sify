@@ -1,0 +1,31 @@
+---
+interface Props {
+  name: string;
+  description: string;
+  tech: string[];
+  link: string;
+  cover?: string;
+}
+
+const { name, description, tech, link, cover } = Astro.props;
+---
+
+<a href={link} target="_blank" rel="noopener noreferrer" class="card group block p-6 hover:border-accent/40">
+  {cover && (
+    <div class="mb-4 overflow-hidden rounded-lg border border-line">
+      <img src={cover} alt={name} class="w-full h-36 object-cover group-hover:scale-[1.02] transition-transform duration-300" loading="lazy" />
+    </div>
+  )}
+  <div class="flex items-baseline justify-between gap-3">
+    <h2 class="text-lg font-semibold text-ink group-hover:text-accent transition-colors line-clamp-1">{name}</h2>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-faint group-hover:text-accent transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+    </svg>
+  </div>
+  <p class="text-sm text-muted mt-2 line-clamp-2">{description}</p>
+  <div class="mt-4 flex flex-wrap gap-1.5">
+    {tech.slice(0, 3).map((t) => (
+      <span class="px-2 py-0.5 text-xs rounded-md bg-accentsoft text-accent">{t}</span>
+    ))}
+  </div>
+</a>

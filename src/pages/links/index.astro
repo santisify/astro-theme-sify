@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FriendCard from '../../components/links/FriendCard.astro';
+import linksData from '../../../public/links.json';
+
+const links: typeof linksData = linksData;
+
+const grouped = new Map<string, typeof links>();
+for (const link of links) {
+  const cat = link.category || '其他';
+  if (!grouped.has(cat)) grouped.set(cat, []);
+  grouped.get(cat)!.push(link);
+}
+---
+
+<BaseLayout title="友链" description="友情链接">
+  <div class="container py-12 sm:py-16">
+    <div class="max-w-[42rem] mx-auto">
+      <header class="mb-10 border-b border-line pb-6">
+        <p class="eyebrow">Links</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">友链</h1>
+        <p class="mt-2 text-sm text-muted">友好的链接，共同成长</p>
+      </header>
+
+      <!-- 申请说明 -->
+      <div class="card p-6 mb-10">
+        <h2 class="font-semibold text-ink mb-3">申请友链</h2>
+        <p class="text-sm text-muted mb-3">欢迎交换友情链接！请满足以下条件：</p>
+        <ul class="text-sm text-muted space-y-1 mb-4 list-disc pl-5">
+          <li>拥有自己的博客或网站</li>
+          <li>内容健康，定期更新</li>
+          <li>在博客中放置本站链接</li>
+        </ul>
+        <p class="text-sm text-muted">
+          联系方式：<code class="px-1.5 py-0.5 rounded-md bg-accentsoft text-accent font-mono text-xs">santisify@example.com</code>
+        </p>
+      </div>
+
+      {/* Link groups */}
+      {[...grouped.entries()].map(([category, items]) => (
+        <section class="mb-10">
+          <h2 class="font-mono text-xs uppercase tracking-[0.15em] text-faint mb-2 border-b border-line pb-3">{category}</h2>
+          <div>
+            {items.map((link) => (
+              <FriendCard {...link} />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

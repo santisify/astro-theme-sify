@@ -1,0 +1,52 @@
+---
+import type { CollectionEntry, GetStaticPathsResult } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('series');
+  const paths: GetStaticPathsResult<{ slug: string }> = [];
+  const seriesSet = new Set<string>();
+  for (const post of allPosts) {
+    const parts = post.id.split('/');
+    if (parts.length > 1) seriesSet.add(parts[0]);
+  }
+  for (const slug of seriesSet) {
+    paths.push({ params: { slug } });
+  }
+  return paths;
+}
+
+const slug = Astro.params.slug;
+const allPosts = await getCollection('series');
+const seriesPosts = allPosts.filter((p) => p.id.startsWith(`${slug}/`)).sort((a, b) => a.data.order - b.data.order);
+
+if (seriesPosts.length === 0) return Astro.redirect('/404');
+
+const first = seriesPosts[0];
+---
+
+<BaseLayout title={`${first.data.title} 系列`} description={first.data.description}>
+  <div class="container py-12 sm:py-16">
+    <div class="max-w-[42rem] mx-auto">
+      <a href="/series" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors inline-block mb-6">
+        ← 返回系列列表
+      </a>
+      <p class="eyebrow">Series · {seriesPosts.length} 篇</p>
+      <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-[-0.02em]">{first.data.title}</h1>
+      <p class="mt-4 text-muted leading-relaxed">{first.data.description}</p>
+      <div class="mt-10 space-y-1">
+        {seriesPosts.map((p) => (
+          <a href={`/series/${slug}/${p.data.order}`} class="group flex items-baseline gap-5 py-3.5 border-b border-line last:border-0">
+            <span class="shrink-0 w-8 font-mono text-sm text-faint tabular-nums">{String(p.data.order).padStart(2, '0')}</span>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-ink group-hover:text-accent transition-colors line-clamp-1">{p.data.title}</p>
+              <p class="text-sm text-muted line-clamp-1 mt-0.5">{p.data.description}</p>
+            </div>
+            <span class="font-mono text-xs text-faint shrink-0 group-hover:text-accent transition-colors">阅读 →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>

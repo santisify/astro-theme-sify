@@ -1,0 +1,13 @@
+---
+interface Props {
+  tag: string;
+  size?: 'sm' | 'md';
+}
+
+const { tag, size = 'md' } = Astro.props;
+const cls = size === 'sm'
+  ? 'px-2 py-0.5 text-xs rounded-md bg-accentsoft text-accent hover:bg-accent hover:text-paper transition-colors'
+  : 'px-2.5 py-1 text-sm rounded-md bg-accentsoft text-accent hover:bg-accent hover:text-paper transition-colors';
+---
+
+<a href={`/tags/${encodeURIComponent(tag)}`} class={cls}>{tag}</a>

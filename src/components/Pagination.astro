@@ -1,0 +1,61 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath: string; // 如 '/blog' 或 '/tags/Go'
+}
+
+const { currentPage, totalPages, basePath } = Astro.props;
+
+// 生成页码列表：始终显示首页/末页，当前页前后各 1 页，其余用省略号
+const pages: (number | '…')[] = [];
+for (let i = 1; i <= totalPages; i++) {
+  if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+    pages.push(i);
+  } else if (pages[pages.length - 1] !== '…') {
+    pages.push('…');
+  }
+}
+
+function pageUrl(page: number): string {
+  return page === 1 ? basePath : `${basePath}/${page}`;
+}
+---
+
+{totalPages > 1 && (
+  <nav class="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6 font-mono text-xs uppercase tracking-[0.15em]">
+    <div>
+      {currentPage > 1 ? (
+        <a href={pageUrl(currentPage - 1)} class="text-muted hover:text-accent transition-colors">
+          ← 上一页
+        </a>
+      ) : (
+        <span class="text-faint cursor-not-allowed">← 上一页</span>
+      )}
+    </div>
+
+    <div class="flex items-center gap-1 text-faint">
+      {pages.map((p, i) =>
+        p === '…' ? (
+          <span key={`e-${i}`} class="px-1.5">…</span>
+        ) : p === currentPage ? (
+          <span key={p} class="px-2 text-accent">{String(p).padStart(2, '0')}</span>
+        ) : (
+          <a key={p} href={pageUrl(p)} class="px-2 hover:text-accent transition-colors">
+            {String(p).padStart(2, '0')}
+          </a>
+        ),
+      )}
+    </div>
+
+    <div>
+      {currentPage < totalPages ? (
+        <a href={pageUrl(currentPage + 1)} class="text-muted hover:text-accent transition-colors">
+          下一页 →
+        </a>
+      ) : (
+        <span class="text-faint cursor-not-allowed">下一页 →</span>
+      )}
+    </div>
+  </nav>
+)}

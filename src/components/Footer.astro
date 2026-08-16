@@ -1,0 +1,29 @@
+---
+import { siteConfig } from '../site.config';
+---
+
+<footer class="mt-auto border-t border-line py-10 transition-colors">
+  <div class="container flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-sm text-muted">
+      {siteConfig.footer.copyright}
+    </p>
+    <div class="flex items-center gap-6 font-mono text-xs uppercase tracking-[0.15em] text-muted">
+      {siteConfig.social.github && (
+        <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors" aria-label="GitHub">
+          GitHub
+        </a>
+      )}
+      {siteConfig.social.email && (
+        <a href={siteConfig.social.email} class="hover:text-accent transition-colors" aria-label="邮箱">
+          Email
+        </a>
+      )}
+      <a href="/rss.xml" class="hover:text-accent transition-colors" aria-label="RSS">
+        RSS
+      </a>
+    </div>
+  </div>
+  <p class="container mt-6 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-faint">
+    {siteConfig.footer.poweredBy}
+  </p>
+</footer>
