@@ -98,9 +98,9 @@ body {
 
 /* ============ 文章排版（prose） ============ */
 .prose {
-  max-width: 46rem;
-  font-size: 1rem;
-  line-height: 1.85;
+  max-width: 56rem;
+  font-size: 1.0625rem;
+  line-height: 1.9;
   color: var(--ink);
 }
 .prose > * + * {
@@ -120,12 +120,12 @@ body {
   font-size: 2rem;
 }
 .prose h2 {
-  font-size: 1.5rem;
+  font-size: 1.625rem;
   padding-bottom: 0.4em;
   border-bottom: 1px solid var(--line);
 }
 .prose h3 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 .prose a {
   color: var(--accent);
@@ -195,7 +195,7 @@ body {
   border-radius: 10px;
   overflow-x: auto;
   margin-top: 1.5em;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   line-height: 1.7;
 }
 .prose pre code {
@@ -219,7 +219,7 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1.5em;
-  font-size: 0.925rem;
+  font-size: 0.9375rem;
 }
 .prose th,
 .prose td {

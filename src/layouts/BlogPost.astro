@@ -53,7 +53,7 @@ const jsonLd = JSON.stringify({
 
 <BaseLayout title={post.data.title} description={post.data.description} image={post.data.cover} jsonLd={jsonLd}>
   <div class="container py-12 sm:py-16">
-    <div class="max-w-[46rem] mx-auto">
+    <div class="max-w-[56rem] mx-auto">
       <!-- Back -->
       <a href="/blog" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors">
         ← 返回博客
@@ -123,19 +123,19 @@ const jsonLd = JSON.stringify({
       </div>
 
       <!-- Navigation -->
-      <nav class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-line pt-8">
-        {prev ? (
-          <a href={`/blog/${entryPath(prev.id)}`} class="group">
+      <nav class="mt-10 flex flex-wrap items-start gap-x-8 gap-y-4 border-t border-line pt-8">
+        {prev && (
+          <a href={`/blog/${entryPath(prev.id)}`} class="group min-w-0">
             <p class="font-mono text-xs uppercase tracking-[0.15em] text-faint group-hover:text-accent transition-colors">← 上一篇</p>
             <p class="mt-2 font-medium text-ink group-hover:text-accent transition-colors line-clamp-2">{prev.data.title}</p>
           </a>
-        ) : <div />}
-        {next ? (
-          <a href={`/blog/${entryPath(next.id)}`} class="group sm:text-right">
+        )}
+        {next && (
+          <a href={`/blog/${entryPath(next.id)}`} class="group min-w-0 ml-auto text-right">
             <p class="font-mono text-xs uppercase tracking-[0.15em] text-faint group-hover:text-accent transition-colors">下一篇 →</p>
             <p class="mt-2 font-medium text-ink group-hover:text-accent transition-colors line-clamp-2">{next.data.title}</p>
           </a>
-        ) : <div />}
+        )}
       </nav>
     </div>
   </div>

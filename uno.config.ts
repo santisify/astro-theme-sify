@@ -7,6 +7,24 @@ export default defineConfig({
     presetWind4(),
     presetAttributify({ strict: true }),
   ],
+  safelist: [
+    // ── 动态类修复 ──────────────────────────────────────────────
+    // @unocss/astro 的 extractor 无法提取 Astro 模板 JSX 表达式
+    // （{expr.map((x) => ...)}、{cond && ...}）内 class:list 数组 /
+    // class 属性中的类名，这里显式声明确保这些类总是生成：
+    // 系列文章目录项（aside + details）
+    'pl-4', 'py-1.5', 'border-l-2', '-ml-px',
+    'border-accent', 'border-transparent',
+    'hover:text-ink', 'hover:border-faint', 'hover:bg-paper2',
+    // 头部导航（移动端菜单）
+    'px-4',
+    // 标签页标签徽章
+    'px-3', 'rounded', 'hover:text-accent', 'hover:border-accent/50', 'transition-all',
+    // 标签页 tagSize() 动态返回的类
+    'text-base',
+    // 文章页/系列页「上一篇/下一篇」导航（条件块 {prev && ...} 内）
+    'ml-auto', 'text-right',
+  ],
   theme: {
     // 语义化颜色 token —— 值来自 global.css 的 CSS 变量，深浅色自动翻转
     colors: {
