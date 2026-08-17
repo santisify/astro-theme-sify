@@ -24,7 +24,8 @@ const seriesList = [...seriesMap.entries()]
     description: posts[0].data.description,
     count: posts.length,
   }))
-  .sort((a, b) => b.count - a.count);
+  .sort((a, b) => b.count - a.count)
+  .map((s, i) => ({ ...s, seq: i + 1 }));
 
 const tagCount = new Set(allPosts.flatMap((p) => p.data.tags)).size;
 ---
@@ -93,7 +94,7 @@ const tagCount = new Set(allPosts.flatMap((p) => p.data.tags)).size;
             href={`/series/${s.slug}`}
             class="group flex items-baseline gap-4 py-4 border-b border-line last:border-0"
           >
-            <span class="font-mono text-sm text-faint w-8 shrink-0 tabular-nums">{String(s.count).padStart(2, '0')}</span>
+            <span class="font-mono text-sm text-faint w-8 shrink-0 tabular-nums">{String(s.seq).padStart(2, '0')}</span>
             <div class="flex-1 min-w-0">
               <p class="font-medium text-ink group-hover:text-accent transition-colors line-clamp-1">{s.title}</p>
               <p class="text-sm text-muted line-clamp-1 mt-0.5">{s.description}</p>
