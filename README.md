@@ -17,6 +17,9 @@
 - 🔔 **SEO**：canonical、Open Graph、Twitter Card、JSON-LD（BlogPosting）、sitemap、robots.txt
 - 📡 **RSS**：`/rss.xml` 订阅（最新 20 篇）
 - 💬 **评论系统**：集成 Twikoo，支持文章和系列教程页面评论（需配置环境变量）
+- 🎨 **Mermaid 流程图**：` ```mermaid ` 代码块构建期渲染为矢量图，支持深浅色（`rehype-mermaid`）
+- 🧮 **KaTeX 数学公式**：行内 `$...$` 与块级 `$$...$$` 公式渲染（`remark-math` + `rehype-katex`）
+- 📋 **代码一键复制**：所有代码块右上角带「复制」按钮，点击复制纯文本（原生剪贴板 API）
 
 ## 🚀 快速开始
 
@@ -117,6 +120,40 @@ draft: false                    # 可选
 
 > 系列文章必须放在以系列名命名的子目录下（如 `series/go/01-intro.md`），系列名取自子目录名。
 
+### 富内容：Mermaid / KaTeX
+
+- **Mermaid 流程图**：用 fenced code block 并把语言写为 `mermaid`：
+
+  ````md
+  ```mermaid
+  flowchart TD
+      A[开始] --> B{是否成功?}
+      B -- 是 --> C[完成]
+      B -- 否 --> A
+  ```
+  ````
+
+  构建期会通过 Playwright 无头浏览器渲染成 SVG，并以 `<picture>` 提供深浅两套配色。
+- **数学公式**：行内公式用 `$...$`，块级公式用 `$$...$$`：
+
+  ```md
+  欧拉恒等式 $e^{i\pi}+1=0$。
+
+  $$
+  \sum_{n=1}^{\infty}\frac{1}{n^2}=\frac{\pi^2}{6}
+  $$
+  ```
+
+### 部署前置：Playwright 浏览器
+
+`rehype-mermaid` 在**构建期**渲染流程图，需要一台 Playwright 无头浏览器（Chromium）。依赖安装时由 `postinstall` 自动下载并写入项目内 `.playwright/` 目录（已在 `.gitignore` 中忽略）。若离线或 CI 未触发 postinstall，手动执行：
+
+```bash
+bun run browsers:install
+```
+
+> 构建命令 `bun run build` 会通过 `PLAYWRIGHT_BROWSERS_PATH` 指向项目内 `.playwright/`，本地与 Vercel / Netlify 均已配置。
+
 ## ⚙️ 站点配置
 
 编辑 `src/site.config.ts`：
@@ -153,6 +190,9 @@ draft: false                    # 可选
 | [UnoCSS](https://unocss.dev)（preset-wind4 + attributify） | ^66.7 |
 | [@astrojs/rss](https://docs.astro.build/en/guides/rss) | ^4.0 |
 | [@astrojs/sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap) | ^3.7 |
+| [rehype-mermaid](https://www.npmjs.com/package/rehype-mermaid) | ^3 |
+| [remark-math](https://www.npmjs.com/package/remark-math) / [rehype-katex](https://www.npmjs.com/package/rehype-katex) | ^6 / ^7 |
+| [Playwright](https://playwright.dev)（mermaid 构建期渲染） | ^1.62 |
 | 运行时 | Bun ≥ 1.3 / Node ≥ 22.12 |
 
 ## 📄 License

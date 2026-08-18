@@ -1,5 +1,5 @@
 {
-  "buildCommand": "bun run build",
+  "buildCommand": "bun run browsers:install && bun run build",
   "outputDirectory": "dist",
   "devCommand": "bun run dev",
   "installCommand": "bun install"

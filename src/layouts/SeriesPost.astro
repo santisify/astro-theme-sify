@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Comments from '../components/Comments.astro';
+import CodeCopyButton from '../components/CodeCopyButton.astro';
 
 interface Props {
   post: CollectionEntry<'series'>;
@@ -104,6 +105,7 @@ const { Content } = await render(post);
         <div class="prose">
           <Content />
         </div>
+        <CodeCopyButton />
       </article>
 
       {/* Navigation */}

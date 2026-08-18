@@ -5,6 +5,7 @@ import BaseLayout from './BaseLayout.astro';
 import { siteConfig } from '../site.config';
 import { entryPath } from '../utils/content';
 import Comments from '../components/Comments.astro';
+import CodeCopyButton from '../components/CodeCopyButton.astro';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -109,6 +110,7 @@ const jsonLd = JSON.stringify({
         <div class="prose">
           <Content />
         </div>
+        <CodeCopyButton />
       </article>
 
       <!-- 结尾标签 -->

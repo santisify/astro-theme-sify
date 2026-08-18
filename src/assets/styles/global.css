@@ -1,5 +1,8 @@
 /* UnoCSS 样式由 @unocss/astro (injectEntry) 自动注入，这里只放自定义全局样式 */
 
+/* KaTeX 数学公式样式 */
+@import 'katex/dist/katex.min.css';
+
 /* ============ 设计 token（语义化，深浅色自动翻转） ============ */
 :root {
   color-scheme: light;
@@ -204,6 +207,45 @@ body {
   color: inherit;
   font-size: inherit;
 }
+/* 代码块一键复制按钮（由 CodeCopyButton 组件动态注入，必须是全局样式） */
+.prose pre.has-copy-btn {
+  position: relative; /* 作为复制按钮的定位容器 */
+  padding-top: 2.9rem; /* 给右上角按钮让出空间 */
+}
+.prose pre .copy-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.75rem;
+  z-index: 2;
+  line-height: 1;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--faint);
+  background: color-mix(in srgb, var(--paper2) 75%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.32rem 0.55rem;
+  opacity: 0.75;
+  transition: color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.prose pre .copy-btn:hover {
+  opacity: 1;
+  color: var(--accent);
+  background: var(--paper2);
+}
+.prose pre .copy-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.prose pre .copy-btn.copy-done {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
 .prose hr {
   border: none;
   border-top: 1px solid var(--line);
@@ -214,6 +256,26 @@ body {
   border-radius: 10px;
   border: 1px solid var(--line);
   margin: 1.6em 0;
+}
+/* Mermaid 流程图（rehype-mermaid 渲染的 <picture>/<img>） */
+.prose picture.mermaid,
+.prose picture.flowchart,
+.prose p.mermaid {
+  margin: 1.6em 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--paper);
+  text-align: center;
+}
+.prose picture.mermaid img,
+.prose picture.flowchart img {
+  display: block;
+  margin: 1.2em auto;
+  max-width: 100%;
+  height: auto;
+  border: none;
+  border-radius: 0;
 }
 .prose table {
   width: 100%;

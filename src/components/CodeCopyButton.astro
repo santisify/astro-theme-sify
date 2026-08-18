@@ -1,0 +1,76 @@
+---
+// 代码块一键复制按钮
+// 放在文章正文（.prose）之后。渲染为模块脚本，由 Astro 打包注入页面。
+// 为每个 <pre> 代码块添加右上角复制按钮，点击后复制纯文本到剪贴板。
+// 按钮样式完全由本组件 <style> 提供（而非 UnoCSS 工具类），避免 JS 字符串内
+// 的类名不被 UnoCSS 扫描器捕获。
+---
+
+<script>
+  // 等 DOM 就绪（组件位于 body 末尾，通常已就绪；用 DOMContentLoaded 兜底）
+  function initCopyButtons() {
+    const preBlocks = document.querySelectorAll('.prose pre');
+    preBlocks.forEach((pre) => {
+      // 跳过已被 rehype-mermaid 渲染为 <img>/<picture> 的块（<pre class="mermaid">
+      // 会被替换），再用 data 标记避免重复注入。
+      if (pre.querySelector('code.language-mermaid') || pre.dataset.copyAdded) return;
+
+      const code = pre.querySelector('code');
+      if (!code) return;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'copy-btn';
+      btn.textContent = '复制';
+      btn.setAttribute('aria-label', '复制代码');
+      btn.title = '复制代码';
+
+      // 使 pre 成为可定位容器
+      pre.classList.add('has-copy-btn');
+      pre.dataset.copyAdded = 'true';
+      pre.appendChild(btn);
+
+      btn.addEventListener('click', async () => {
+        let text = code.innerText ?? code.textContent ?? '';
+        text = text.replace(/\n$/, '');
+        try {
+          await navigator.clipboard.writeText(text);
+          setDone(btn, '已复制');
+        } catch (e) {
+          // 回退：老式 execCommand
+          try {
+            const range = document.createRange();
+            range.selectNodeContents(code);
+            const sel = window.getSelection();
+            sel?.removeAllRanges();
+            sel?.addRange(range);
+            document.execCommand('copy');
+            sel?.removeAllRanges();
+            setDone(btn, '已复制');
+          } catch (e2) {
+            btn.textContent = '失败';
+            setTimeout(() => {
+              btn.textContent = '复制';
+              btn.classList.remove('copy-done');
+            }, 2000);
+          }
+        }
+      });
+    });
+  }
+
+  function setDone(btn, label) {
+    btn.textContent = label;
+    btn.classList.add('copy-done');
+    setTimeout(() => {
+      btn.textContent = '复制';
+      btn.classList.remove('copy-done');
+    }, 2000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCopyButtons);
+  } else {
+    initCopyButtons();
+  }
+</script>

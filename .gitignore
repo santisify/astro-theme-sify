@@ -3,6 +3,9 @@ dist/
 # generated types
 .astro/
 
+# Playwright 浏览器（rehype-mermaid 构建期渲染用，体积大不入库）
+.playwright/
+
 # dependencies
 node_modules/
 
