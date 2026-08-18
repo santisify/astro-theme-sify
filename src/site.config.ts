@@ -42,7 +42,7 @@ const siteConfig: SiteConfig = {
     title: 'Sify',
     description: '个人博客 — 技术笔记、教程与随笔',
     author: 'Sify',
-    url: 'https://sify.dev',
+    url: 'https://astro-sify-demo.lazy-boy-acmer.cn',
     language: 'zh-CN',
   },
   nav: [

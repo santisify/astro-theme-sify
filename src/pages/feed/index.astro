@@ -1,0 +1,130 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import {getCollection} from 'astro:content';
+import {siteConfig} from '@/site.config.ts';
+import {entryPath} from '@/utils/content.ts';
+import PostCard from '@/components/PostCard.astro';
+
+const blogPosts = await getCollection('blog', ({data}) => !data.draft);
+const sorted = blogPosts
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 12);
+---
+<BaseLayout title="订阅 · Sify" description="通过 RSS 订阅我的博客更新">
+    <!-- ===== Feed Hero ===== -->
+    <section class="container pt-16 sm:pt-24 pb-14 sm:pb-20 text-center">
+        <p class="eyebrow flex items-center justify-center gap-2">
+            <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+            订阅博客
+        </p>
+        <h1 class="mt-6 text-[2.2rem] leading-[1.12] sm:text-4xl font-bold tracking-[-0.02em] text-ink">
+            Sify 博客订阅
+        </h1>
+        <p class="mt-4 max-w-xl text-muted leading-relaxed">
+            订阅博客以获取最新文章更新。复制下面的链接到您的 RSS 阅读器中。
+        </p>
+
+        <!-- ===== Feed URL ===== -->
+        <div class="mt-8 flex flex-col items-center gap-4">
+            <div class="w-full max-w-xl flex items-center rounded-xl border border-line bg-paper/60">
+                <div class="flex-1 flex items-center px-4 py-3 min-w-0">
+                    <svg class="w-5 h-5 text-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 4v16c0 2.21 1.79 4 4 4h16c2.21 0 4-1.79 4-4V4c0-2.21-1.79-4-4-4H4z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V9m0 8h8"/>
+                    </svg>
+                    <span class="ml-3 font-mono text-[0.9rem] select-all truncate" id="feed-url">
+                        {siteConfig.site.url}/rss.xml
+                    </span>
+                </div>
+
+                <button class="flex items-center btn shrink-0 mr-3 px-3 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
+                        onclick="navigator.clipboard.writeText(document.getElementById('feed-url').textContent).then(() => {
+                    this.textContent = 'copied';
+                    setTimeout(() => { this.textContent = 'copy'; }, 1500);
+                })">
+                    <span class="font-mono text-[0.9rem] select-all">copy</span>
+                </button>
+            </div>
+        </div>
+
+        <p class="mt-6 text-sm text-muted">
+            或使用一键订阅按钮（如果您的阅读器支持）：
+            <a href=`https://www.feedly.com/i/subscription/feed/${encodeURIComponent(siteConfig.site.url)}/rss.xml`
+               class="text-accent hover:text-accent2 transition-colors"
+               target="_blank"
+               rel="noopener noreferrer">
+                在 Feedly 中订阅
+            </a>
+        </p>
+    </section>
+
+    <!-- ===== Recent Posts ===== -->
+    <section class="container pb-16 sm:pb-20">
+        <div class="flex items-end justify-between mb-6 border-b border-line pb-4">
+            <div>
+                <p class="eyebrow">最新文章</p>
+                <h2 class="mt-2 text-2xl font-semibold tracking-[-0.01em]">最近更新</h2>
+            </div>
+            <a href="/blog"
+               class="font-mono text-xs uppercase tracking-[0.15em] text-muted hover:text-accent transition-colors">
+                查看全部 →
+            </a>
+        </div>
+
+        <div class="space-y-6">
+          {sorted.map((post, i) => (
+                  <PostCard key={post.id} post={post} index={i + 1} class="group"/>
+          ))}
+        </div>
+    </section>
+
+    <!-- ===== About Feed ===== -->
+    <section class="container pb-20">
+        <div class="rounded-xl border border-line bg-paper/60 p-8 sm:p-10">
+            <p class="eyebrow">关于 RSS</p>
+            <h2 class="mt-2 text-2xl font-semibold tracking-[-0.01em]">什么是 RSS？</h2>
+            <p class="mt-4 max-w-2xl text-muted leading-relaxed">
+                RSS（Really Simple Syndication）是一种用于发布经常更新的内容的网站摘要格式。通过订阅 RSS
+                feed，您可以在不访问网站的情况下，
+                在您的 RSS 阅读器中获取最新文章更新。这使得信息聚合变得简单高效。
+            </p>
+            <p class="mt-6 text-sm text-muted">
+                常用的 RSS 阅读器包括：Feedly、Inoreader、NewsFlip、NetNewsWire 等。许多现代浏览器也通过插件支持 RSS。
+            </p>
+        </div>
+    </section>
+</BaseLayout>
+
+<style>
+    /* Feed-specific enhancements */
+    .select-all {
+        user-select: all;
+        -webkit-user-select: all;
+        -moz-user-select: all;
+        -ms-user-select: all;
+    }
+
+    .btn-accent {
+        background: var(--color-accent);
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition: background 0.2s ease;
+        font-weight: 500;
+    }
+
+    .btn-accent:hover {
+        background: var(--color-accent-dark, #1d4ed8);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+    }
+</style>
