@@ -76,6 +76,6 @@ bun install --frozen-lockfile
 
 ## 总结
 
-- ✅ `rehype-mermaid` 渲染流程图与时序图为矢量图片
+- ✅ `mermaid` 前端运行时渲染流程图与时序图为内联 SVG
 - ✅ `remark-math` + `rehype-katex` 渲染行内/块级公式
 - ✅ 每个代码块右上角带「复制」按钮

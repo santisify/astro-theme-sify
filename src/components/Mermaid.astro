@@ -1,0 +1,79 @@
+---
+// 前端运行时 Mermaid 渲染器
+// 放在文章正文（.prose）之后。渲染为模块脚本，由 Astro 打包并注入页面。
+// 该脚本会找到每个 <pre><code class="language-mermaid"> 代码块，用 mermaid 库在
+// 用户浏览器里渲染为内联 SVG。渲染结果替换原始代码块，源码保存在每个容器的
+// <template> 中，切换明暗主题时据此按新主题重渲染。
+// 这样避免了构建期依赖 Playwright / Chromium 无头浏览器。
+---
+<script>
+  import mermaid from 'mermaid';
+
+  const FONT_FAMILY = '"Inter", ui-sans-serif, system-ui, sans-serif';
+
+  function currentTheme(): 'dark' | 'default' {
+    return document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+  }
+
+  // 把容器内的 <template> 渲染成新的 SVG（替换旧 SVG）
+  async function renderWrap(wrap: HTMLElement): Promise<void> {
+    const template = wrap.querySelector('template');
+    if (!template) return;
+    const source = (template.textContent ?? '').trim();
+    if (!source) return;
+
+    wrap.querySelector('.mermaid-diagram')?.remove();
+    try {
+      const id = `mermaid-${Math.random().toString(36).slice(2, 10)}`;
+      const { svg } = await mermaid.render(id, source);
+      const holder = document.createElement('div');
+      holder.id = id;
+      holder.className = 'mermaid-diagram';
+      holder.innerHTML = svg;
+      wrap.appendChild(holder);
+    } catch (err) {
+      console.error('Mermaid 渲染失败：', err);
+      const fail = document.createElement('div');
+      fail.className = 'mermaid-error';
+      fail.textContent = 'Mermaid 渲染失败';
+      wrap.appendChild(fail);
+    }
+  }
+
+  function initMermaidAndRender(): void {
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: currentTheme(),
+      fontFamily: FONT_FAMILY,
+    });
+    // 先处理尚未渲染的 .language-mermaid 代码块
+    document.querySelectorAll<HTMLElement>('.prose pre > code.language-mermaid').forEach((codeEl) => {
+      const pre = codeEl.closest('pre') as HTMLElement | null;
+      if (!pre || pre.dataset.mermaidDone === 'true') return;
+      pre.dataset.mermaidDone = 'true';
+
+      const wrap = document.createElement('div');
+      wrap.className = 'mermaid-render mermaid';
+      const template = document.createElement('template');
+      template.textContent = codeEl.textContent ?? '';
+      wrap.appendChild(template);
+      pre.replaceWith(wrap);
+      renderWrap(wrap);
+    });
+    // 再重渲染已存在的（切换主题后）
+    document.querySelectorAll<HTMLElement>('.prose .mermaid-render').forEach(renderWrap);
+  }
+
+  function boot(): void {
+    // 紧随主题脚本（BaseLayout 首屏）执行，class 已就绪
+    initMermaidAndRender();
+    const observer = new MutationObserver(() => initMermaidAndRender());
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+</script>

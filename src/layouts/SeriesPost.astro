@@ -4,6 +4,7 @@ import { render } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Comments from '../components/Comments.astro';
 import CodeCopyButton from '../components/CodeCopyButton.astro';
+import Mermaid from '../components/Mermaid.astro';
 
 interface Props {
   post: CollectionEntry<'series'>;
@@ -106,6 +107,7 @@ const { Content } = await render(post);
           <Content />
         </div>
         <CodeCopyButton />
+        <Mermaid />
       </article>
 
       {/* Navigation */}

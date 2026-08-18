@@ -133,7 +133,7 @@ draft: false                    # 可选
   ```
   ````
 
-  构建期会通过 Playwright 无头浏览器渲染成 SVG，并以 `<picture>` 提供深浅两套配色。
+  Mermaid 图在**用户浏览器端**运行时渲染为内联 SVG（前端加载 `mermaid` 包，无需任何浏览器依赖），并跟随明暗主题重渲染。
 - **数学公式**：行内公式用 `$...$`，块级公式用 `$$...$$`：
 
   ```md
@@ -144,15 +144,7 @@ draft: false                    # 可选
   $$
   ```
 
-### 部署前置：Playwright 浏览器
-
-`rehype-mermaid` 在**构建期**渲染流程图，需要一台 Playwright 无头浏览器（Chromium）。依赖安装时由 `postinstall` 自动下载并写入项目内 `.playwright/` 目录（已在 `.gitignore` 中忽略）。若离线或 CI 未触发 postinstall，手动执行：
-
-```bash
-bun run browsers:install
-```
-
-> 构建命令 `bun run build` 会通过 `PLAYWRIGHT_BROWSERS_PATH` 指向项目内 `.playwright/`，本地与 Vercel / Netlify 均已配置。
+> Mermaid 图为纯静态输出，无需额外前置步骤。构建命令 `bun run build` 不依赖任何浏览器。
 
 ## ⚙️ 站点配置
 
@@ -190,9 +182,9 @@ bun run browsers:install
 | [UnoCSS](https://unocss.dev)（preset-wind4 + attributify） | ^66.7 |
 | [@astrojs/rss](https://docs.astro.build/en/guides/rss) | ^4.0 |
 | [@astrojs/sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap) | ^3.7 |
-| [rehype-mermaid](https://www.npmjs.com/package/rehype-mermaid) | ^3 |
-| [remark-math](https://www.npmjs.com/package/remark-math) / [rehype-katex](https://www.npmjs.com/package/rehype-katex) | ^6 / ^7 |
-| [Playwright](https://playwright.dev)（mermaid 构建期渲染） | ^1.62 |
+| [rehype-katex](https://www.npmjs.com/package/rehype-katex) | 7 |
+| [remark-math](https://www.npmjs.com/package/remark-math) | ^6 |
+| [Mermaid](https://mermaid.js.org)（前端运行时渲染） | ^11 |
 | 运行时 | Bun ≥ 1.3 / Node ≥ 22.12 |
 
 ## 📄 License

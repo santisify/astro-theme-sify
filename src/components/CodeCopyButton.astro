@@ -11,8 +11,8 @@
   function initCopyButtons() {
     const preBlocks = document.querySelectorAll('.prose pre');
     preBlocks.forEach((pre) => {
-      // 跳过已被 rehype-mermaid 渲染为 <img>/<picture> 的块（<pre class="mermaid">
-      // 会被替换），再用 data 标记避免重复注入。
+      // mermaid 代码块由 Mermaid 组件在前端运行时替换为 SVG，不应加复制按钮。
+      // （Mermaid 组件脚本与这里几乎同时执行，用 data 标记与代码检测双保险。）
       if (pre.querySelector('code.language-mermaid') || pre.dataset.copyAdded) return;
 
       const code = pre.querySelector('code');

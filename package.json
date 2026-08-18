@@ -7,22 +7,19 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "PLAYWRIGHT_BROWSERS_PATH=\"$PWD/.playwright\" astro dev",
-    "build": "PLAYWRIGHT_BROWSERS_PATH=\"$PWD/.playwright\" astro build",
+    "dev": "astro dev",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "typecheck": "tsc --noEmit",
-    "browsers:install": "PLAYWRIGHT_BROWSERS_PATH=\"$PWD/.playwright\" playwright install chromium",
-    "postinstall": "PLAYWRIGHT_BROWSERS_PATH=\"$PWD/.playwright\" playwright install chromium"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.2.2",
     "katex": "^0.18.4",
-    "playwright": "^1.62.1",
+    "mermaid": "^11.16.1",
     "rehype-katex": "7",
-    "rehype-mermaid": "3",
     "remark-math": "6"
   },
   "devDependencies": {

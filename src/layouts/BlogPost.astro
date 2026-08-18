@@ -6,6 +6,7 @@ import { siteConfig } from '../site.config';
 import { entryPath } from '../utils/content';
 import Comments from '../components/Comments.astro';
 import CodeCopyButton from '../components/CodeCopyButton.astro';
+import Mermaid from '../components/Mermaid.astro';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -111,6 +112,7 @@ const jsonLd = JSON.stringify({
           <Content />
         </div>
         <CodeCopyButton />
+        <Mermaid />
       </article>
 
       <!-- 结尾标签 -->

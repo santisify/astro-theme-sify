@@ -257,25 +257,31 @@ body {
   border: 1px solid var(--line);
   margin: 1.6em 0;
 }
-/* Mermaid 流程图（rehype-mermaid 渲染的 <picture>/<img>） */
-.prose picture.mermaid,
-.prose picture.flowchart,
-.prose p.mermaid {
+/* Mermaid 流程图（前端运行时 mermaid 渲染的容器） */
+.prose .mermaid-render.mermaid {
   margin: 1.6em 0;
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
   background: var(--paper);
+  padding: 1.2em;
   text-align: center;
 }
-.prose picture.mermaid img,
-.prose picture.flowchart img {
+.prose .mermaid-render .mermaid-diagram {
   display: block;
-  margin: 1.2em auto;
+  margin: 0 auto;
+  max-width: 100%;
+}
+.prose .mermaid-render .mermaid-diagram svg {
   max-width: 100%;
   height: auto;
-  border: none;
-  border-radius: 0;
+}
+.prose .mermaid-render .mermaid-error {
+  color: var(--accent);
+  font-size: 0.875rem;
+}
+.prose .mermaid-render template {
+  display: none;
 }
 .prose table {
   width: 100%;

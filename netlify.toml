@@ -1,10 +1,9 @@
 [build]
-  command = "bun run browsers:install && bun run build"
+  command = "bun run build"
   publish = "dist"
 
 [build.environment]
   NODE_VERSION = "22"
-  PLAYWRIGHT_BROWSERS_PATH = ".playwright"
 
 [dev]
   command = "bun run dev"
