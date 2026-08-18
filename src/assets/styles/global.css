@@ -245,3 +245,53 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============ Twikoo 评论样式 ============ */
+#twikoo {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+#twikoo .tk-comment {
+  background: var(--paper2);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+#twikoo .tk-comment-header {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+#twikoo .tk-comment-body {
+  color: var(--ink);
+}
+#twikoo .tk-comment-actions {
+  color: var(--faint);
+}
+#twikoo .tk-btn {
+  border-color: var(--line);
+  color: var(--ink);
+}
+#twikoo .tk-btn:hover {
+  background: var(--accentsoft);
+  color: var(--accent);
+}
+#twikoo .tk-input,
+#twikoo .tk-textarea {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+#twikoo .tk-input:focus,
+#twikoo .tk-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+#twikoo .tk-btn-primary {
+  background: var(--accent);
+  color: var(--paper);
+}
+#twikoo .tk-btn-primary:hover {
+  background: var(--accent2);
+}

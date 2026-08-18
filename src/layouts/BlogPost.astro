@@ -4,6 +4,7 @@ import { render } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import { siteConfig } from '../site.config';
 import { entryPath } from '../utils/content';
+import Comments from '../components/Comments.astro';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -137,6 +138,9 @@ const jsonLd = JSON.stringify({
           </a>
         )}
       </nav>
+
+       {/* 评论 */}
+       <Comments pageOnly />
     </div>
   </div>
 </BaseLayout>

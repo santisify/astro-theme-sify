@@ -1,0 +1,34 @@
+---
+import { siteConfig } from '../site.config';
+
+const enabled = siteConfig.comments.enabled;
+---
+{/* Twikoo 容器 with loading indicator */}
+<div id="twikoo" class="mb-12" data-envId="{envId}">
+  <p class="text-center text-muted py-8">加载中…</p>
+</div>
+
+{/* Twikoo 脚本 */}
+{ enabled && (
+  <> 
+    <script
+      src="https://cdn.staticfile.org/twikoo/1.7.19/twikoo.min.js"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script is:inline define:vars= {{ siteConfig }}>
+      const twikooContainer = document.getElementById('twikoo');
+      const envId = twikooContainer?.dataset.envId;
+      twikoo.init({
+        envId: siteConfig.comments.envId,
+        el: '#twikoo',
+        lang: 'zh-CN',
+        darkMode: 'auto',
+        pathAlias: {
+          '/blog/': '',
+          '/series/': ''
+        }
+      });
+    </script>
+  </>
+)}

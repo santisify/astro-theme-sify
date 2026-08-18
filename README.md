@@ -16,6 +16,7 @@
 - 🔗 **友链 / 项目 / 关于**：由 `public/links.json` 驱动的友链页等辅助页面
 - 🔔 **SEO**：canonical、Open Graph、Twitter Card、JSON-LD（BlogPosting）、sitemap、robots.txt
 - 📡 **RSS**：`/rss.xml` 订阅（最新 20 篇）
+- 💬 **评论系统**：集成 Twikoo，支持文章和系列教程页面评论（需配置环境变量）
 
 ## 🚀 快速开始
 
@@ -124,6 +125,7 @@ draft: false                    # 可选
 - `nav`：顶部导航菜单
 - `social`：GitHub / 邮箱 / RSS 等社交链接
 - `footer`：版权信息与"Powered by"
+- `comments`：评论系统配置（`enabled`: 布尔值，`envId`: Twikoo 服务端地址，支持环境变量 `PUBLIC_TWIKOO_ENV_ID`）
 
 友链数据编辑 `public/links.json`：
 

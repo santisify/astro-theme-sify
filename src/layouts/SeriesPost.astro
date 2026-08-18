@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
+import Comments from '../components/Comments.astro';
 
 interface Props {
   post: CollectionEntry<'series'>;
@@ -120,6 +121,9 @@ const { Content } = await render(post);
           </a>
         )}
       </nav>
+
+       {/* 评论 */}
+       <Comments pageOnly />
     </div>
   </div>
 </BaseLayout>

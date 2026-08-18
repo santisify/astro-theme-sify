@@ -24,6 +24,17 @@ export type SiteConfig = {
     copyright: string;
     poweredBy: string;
   };
+  /**
+   * 评论系统配置
+   * - enabled: 总开关
+   * - envId:  Twikoo 服务端地址（自部署时填 Vercel/Netlify 域名，
+   *           使用 Twikoo 官方云时填 `https://twikoo.zhheo.com`）
+   *           也可通过环境变量 `PUBLIC_TWIKOO_ENV_ID` 注入，便于 CI/CD
+   */
+  comments: {
+    enabled: boolean;
+    envId: string;
+  };
 };
 
 const siteConfig: SiteConfig = {
@@ -46,12 +57,19 @@ const siteConfig: SiteConfig = {
   ],
   social: {
     github: 'https://github.com/santisify',
-    email: 'mailto:santisify@example.com',
+    email: 'mailto:santisify@qq.com',
     rss: '/rss.xml',
   },
   footer: {
     copyright: '© 2026 Sify. All rights reserved.',
     poweredBy: 'Powered by Astro & UnoCSS',
+  },
+  comments: {
+    enabled: true,
+    // 使用环境变量 PUBLIC_TWIKOO_ENV_ID 注入 Twikoo 服务端地址
+    // 需要到部署平台（如 Vercel、Netlify）设置环境变量 PUBLIC_TWIKOO_ENV_ID。
+    // 详细环境ID参考：https://twikoo.js.org/backend.html
+    envId: import.meta.env.PUBLIC_TWIKOO_ENV_ID,
   },
 };
 
