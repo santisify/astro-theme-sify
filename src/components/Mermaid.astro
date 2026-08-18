@@ -10,44 +10,61 @@
   import mermaid from 'mermaid';
 
   const FONT_FAMILY = '"Inter", ui-sans-serif, system-ui, sans-serif';
+  const WRAP_SEL = '.prose .mermaid-render';
+  const SRC_SEL = '.prose pre > code.language-mermaid';
 
   function currentTheme(): 'dark' | 'default' {
     return document.documentElement.classList.contains('dark') ? 'dark' : 'default';
   }
 
-  // 把容器内的 <template> 渲染成新的 SVG（替换旧 SVG）
-  async function renderWrap(wrap: HTMLElement): Promise<void> {
-    const template = wrap.querySelector('template');
-    if (!template) return;
-    const source = (template.textContent ?? '').trim();
-    if (!source) return;
-
-    wrap.querySelector('.mermaid-diagram')?.remove();
-    try {
-      const id = `mermaid-${Math.random().toString(36).slice(2, 10)}`;
-      const { svg } = await mermaid.render(id, source);
-      const holder = document.createElement('div');
-      holder.id = id;
-      holder.className = 'mermaid-diagram';
-      holder.innerHTML = svg;
-      wrap.appendChild(holder);
-    } catch (err) {
-      console.error('Mermaid 渲染失败：', err);
-      const fail = document.createElement('div');
-      fail.className = 'mermaid-error';
-      fail.textContent = 'Mermaid 渲染失败';
-      wrap.appendChild(fail);
-    }
-  }
-
-  function initMermaidAndRender(): void {
-    mermaid.initialize({
+  function mermaidConfig() {
+    return {
       startOnLoad: false,
       theme: currentTheme(),
       fontFamily: FONT_FAMILY,
-    });
-    // 先处理尚未渲染的 .language-mermaid 代码块
-    document.querySelectorAll<HTMLElement>('.prose pre > code.language-mermaid').forEach((codeEl) => {
+    };
+  }
+
+  // 渲染单个容器：先清掉旧 SVG 与占位，再生成新的。加防重入锁避免并发重复。
+  // 返回一个 Promise，唯一化并发调用：若已有渲染在途，等待同一个 Promis。
+  const renderLocks = new WeakMap<HTMLElement, Promise<void>>();
+  function renderWrap(wrap: HTMLElement): Promise<void> {
+    const inFlight = renderLocks.get(wrap);
+    if (inFlight) return inFlight;
+
+    const task = (async () => {
+      // 移除旧产物（SVG / 错误提示），保留 <template>
+      wrap.querySelectorAll('.mermaid-diagram, .mermaid-error').forEach((n) => n.remove());
+      const template = wrap.querySelector('template');
+      const source = template ? (template.textContent ?? '').trim() : '';
+      if (!source) return;
+
+      try {
+        const id = `mermaid-${Math.random().toString(36).slice(2, 10)}`;
+        const { svg } = await mermaid.render(id, source);
+        const holder = document.createElement('div');
+        holder.id = id;
+        holder.className = 'mermaid-diagram';
+        holder.innerHTML = svg;
+        wrap.appendChild(holder);
+      } catch (err) {
+        console.error('Mermaid 渲染失败：', err);
+        const fail = document.createElement('div');
+        fail.className = 'mermaid-error';
+        fail.textContent = 'Mermaid 渲染失败';
+        wrap.appendChild(fail);
+      } finally {
+        renderLocks.delete(wrap);
+      }
+    })();
+
+    renderLocks.set(wrap, task);
+    return task;
+  }
+
+  // 一次性初始化：把 .language-mermaid 代码块转成容器结构
+  function convertBlocks(): void {
+    document.querySelectorAll<HTMLElement>(SRC_SEL).forEach((codeEl) => {
       const pre = codeEl.closest('pre') as HTMLElement | null;
       if (!pre || pre.dataset.mermaidDone === 'true') return;
       pre.dataset.mermaidDone = 'true';
@@ -58,16 +75,32 @@
       template.textContent = codeEl.textContent ?? '';
       wrap.appendChild(template);
       pre.replaceWith(wrap);
-      renderWrap(wrap);
     });
-    // 再重渲染已存在的（切换主题后）
-    document.querySelectorAll<HTMLElement>('.prose .mermaid-render').forEach(renderWrap);
+    // 初始化完成后统一下手渲染
+    document.querySelectorAll<HTMLElement>(WRAP_SEL).forEach(renderWrap);
+  }
+
+  // 主题切换：仅重渲染已存在的容器
+  function rerenderAll(): void {
+    mermaid.initialize(mermaidConfig());
+    document.querySelectorAll<HTMLElement>(WRAP_SEL).forEach(renderWrap);
   }
 
   function boot(): void {
-    // 紧随主题脚本（BaseLayout 首屏）执行，class 已就绪
-    initMermaidAndRender();
-    const observer = new MutationObserver(() => initMermaidAndRender());
+    mermaid.initialize(mermaidConfig());
+    convertBlocks();
+
+    // 跟随主题切换（Header 通过 .dark 类切换，无自定义事件）。
+    // 用防抖 + 令牌比对，只对 dark 类实际变化时重渲染一次。
+    let lastWasDark = document.documentElement.classList.contains('dark');
+    let timer: number | undefined;
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark === lastWasDark) return;
+      lastWasDark = isDark;
+      window.clearTimeout(timer);
+      timer = window.setTimeout(rerenderAll, 60);
+    });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   }
 
