@@ -26,6 +26,16 @@ export default defineConfig({
     'ml-auto', 'text-right',
   ],
   theme: {
+    fontSize: {
+      xs: ['0.7rem', { lineHeight: '1rem' }],
+      sm: ['0.8125rem', { lineHeight: '1.25rem' }],
+      base: ['0.875rem', { lineHeight: '1.5rem' }],
+      lg: ['1rem', { lineHeight: '1.625rem' }],
+      xl: ['1.125rem', { lineHeight: '1.75rem' }],
+      '2xl': ['1.5rem', { lineHeight: '2rem' }],
+      '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+      '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+    },
     // 语义化颜色 token —— 值来自 global.css 的 CSS 变量，深浅色自动翻转
     colors: {
       primary: 'var(--accent)',
@@ -56,7 +66,7 @@ export default defineConfig({
       card: 'rounded-xl border border-line bg-paper hover:border-accent/40 transition-colors duration-200',
       // 编辑式眉题（mono 小号大写）
       eyebrow: 'font-mono text-[0.7rem] uppercase tracking-[0.18em] text-faint',
-      container: 'max-w-6xl mx-auto px-5 sm:px-8',
+      container: 'max-w-5xl mx-auto px-5 sm:px-8',
     },
   ],
 });

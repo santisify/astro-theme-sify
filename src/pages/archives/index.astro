@@ -50,14 +50,14 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', { month: 'short', day: 'n
 
 <BaseLayout title="归档" description="按时间浏览所有文章">
   <div class="container py-12 sm:py-16">
-    <div class="max-w-3xl mx-auto">
+    <div>
       <header class="mb-10 border-b border-line pb-6">
         <p class="eyebrow">Archive</p>
         <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">归档</h1>
         <p class="mt-2 text-sm text-muted">共 {sorted.length} 篇文章</p>
       </header>
 
-      <div class="relative">
+      <div class="relative max-w-3xl">
         <!-- 时间轴线：left-14 (56px) -->
         <div class="absolute left-14 top-0 bottom-0 w-px bg-line" aria-hidden="true" />
         {years.map(({ year, months }) => (

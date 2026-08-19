@@ -32,7 +32,7 @@ const tagCount = new Set(allPosts.flatMap((p) => p.data.tags)).size;
 
 <BaseLayout title="首页" description={siteConfig.site.description}>
   <!-- ===== Hero ===== -->
-  <section class="container pt-16 sm:pt-24 pb-14 sm:pb-20">
+  <section class="container py-14 sm:py-20">
     <p class="eyebrow flex items-center gap-2">
       <span class="inline-block w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>
       Personal notes · since 2026
@@ -57,7 +57,7 @@ const tagCount = new Set(allPosts.flatMap((p) => p.data.tags)).size;
   </section>
 
   <!-- ===== 最新文章 ===== -->
-  <section class="container pb-14 sm:pb-20">
+  <section class="container py-10 sm:py-14">
     <div class="flex items-end justify-between mb-6 border-b border-line pb-4">
       <div>
         <p class="eyebrow">Latest notes</p>
@@ -77,7 +77,7 @@ const tagCount = new Set(allPosts.flatMap((p) => p.data.tags)).size;
 
   <!-- ===== 系列教程 ===== -->
   {seriesList.length > 0 && (
-    <section class="container pb-14 sm:pb-20">
+    <section class="container py-10 sm:py-14">
       <div class="flex items-end justify-between mb-6 border-b border-line pb-4">
         <div>
           <p class="eyebrow">Series</p>
@@ -107,7 +107,7 @@ const tagCount = new Set(allPosts.flatMap((p) => p.data.tags)).size;
   )}
 
   <!-- ===== 关于 ===== -->
-  <section class="container pb-20">
+  <section class="container py-10 sm:py-14">
     <div class="rounded-xl border border-line bg-paper2/60 p-8 sm:p-10">
       <p class="eyebrow">About</p>
       <h2 class="mt-2 text-2xl font-semibold tracking-[-0.01em]">关于我</h2>

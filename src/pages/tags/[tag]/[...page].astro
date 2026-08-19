@@ -54,18 +54,17 @@ const startIndex = (page - 1) * POSTS_PER_PAGE;
 
 <BaseLayout title={title} description={`标签为 ${tag} 的文章`}>
   <div class="container py-12 sm:py-16">
-    <div class="max-w-3xl mx-auto">
-      <a href="/tags" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors inline-block mb-6">
-        ← 返回标签列表
-      </a>
-      <header class="mb-8 border-b border-line pb-6">
-        <p class="eyebrow">Tagged</p>
-        <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">#{tag}</h1>
-        <p class="mt-2 text-sm text-muted">
-          共 {totalPosts} 篇文章
-          {totalPages > 1 && <span class="font-mono">· 第 {page}/{totalPages} 页</span>}
-        </p>
-      </header>
+    <a href="/tags" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors inline-block mb-6">
+      ← 返回标签列表
+    </a>
+    <header class="mb-8 border-b border-line pb-6">
+      <p class="eyebrow">Tagged</p>
+      <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">#{tag}</h1>
+      <p class="mt-2 text-sm text-muted">
+        共 {totalPosts} 篇文章
+        {totalPages > 1 && <span class="font-mono">· 第 {page}/{totalPages} 页</span>}
+      </p>
+    </header>
 
       <div>
         {posts.map((post, i) => (
@@ -76,6 +75,5 @@ const startIndex = (page - 1) * POSTS_PER_PAGE;
       {totalPages > 1 && (
         <Pagination currentPage={page} totalPages={totalPages} basePath={`/tags/${encodeURIComponent(tag)}`} />
       )}
-    </div>
   </div>
 </BaseLayout>

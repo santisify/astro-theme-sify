@@ -24,29 +24,54 @@ const seriesPosts = allPosts.filter((p) => p.id.startsWith(`${slug}/`)).sort((a,
 if (seriesPosts.length === 0) return Astro.redirect('/404');
 
 const first = seriesPosts[0];
+const title = `${first.data.title} 系列`;
+
+const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
 ---
 
-<BaseLayout title={`${first.data.title} 系列`} description={first.data.description}>
+<BaseLayout title={title} description={first.data.description}>
   <div class="container py-12 sm:py-16">
-    <div class="max-w-3xl mx-auto">
-      <a href="/series" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors inline-block mb-6">
-        ← 返回系列列表
-      </a>
+    <a href="/series" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors inline-block mb-6">
+      ← 返回系列列表
+    </a>
+    <header class="mb-8 border-b border-line pb-6">
       <p class="eyebrow">Series · {seriesPosts.length} 篇</p>
-      <h1 class="mt-2 text-3xl sm:text-4xl font-bold tracking-[-0.02em]">{first.data.title}</h1>
-      <p class="mt-4 text-muted leading-relaxed">{first.data.description}</p>
-      <div class="mt-10 space-y-5">
-        {seriesPosts.map((p) => (
-          <a href={`/series/${slug}/${p.data.order}`} class="group flex items-baseline gap-5 py-7 border-b border-line last:border-0">
-            <span class="shrink-0 w-8 font-mono text-sm text-faint tabular-nums">{String(p.data.order).padStart(2, '0')}</span>
-            <div class="flex-1 min-w-0">
-              <p class="font-medium text-ink group-hover:text-accent transition-colors line-clamp-1">{p.data.title}</p>
-              <p class="text-sm text-muted line-clamp-1 mt-0.5">{p.data.description}</p>
-            </div>
-            <span class="font-mono text-xs text-faint shrink-0 group-hover:text-accent transition-colors">阅读 →</span>
+      <h1 class="mt-2 text-3xl font-bold tracking-[-0.02em]">{first.data.title}</h1>
+      <p class="mt-2 text-sm text-muted">{first.data.description}</p>
+    </header>
+
+    {seriesPosts.map((post, i) => {
+      const postUrl = `/series/${slug}/${post.data.order}`;
+      const pubDate = dateFormatter.format(post.data.pubDate);
+      return (
+        <article class="group flex items-baseline gap-4 py-4 border-b border-line last:border-0">
+          <span class="font-mono text-sm text-faint w-8 shrink-0 tabular-nums select-none">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <a href={postUrl} class="flex-1 min-w-0">
+            <h2 class="font-medium text-ink group-hover:text-accent transition-colors line-clamp-1">
+              {post.data.title}
+            </h2>
+            <p class="text-sm text-muted line-clamp-1 mt-0.5">
+              {post.data.description}
+            </p>
+            {post.data.tags?.length > 0 && (
+              <p class="flex flex-wrap gap-x-3 gap-y-1 mt-1.5 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-faint">
+                {post.data.tags.slice(0, 3).map((tag) => (
+                  <span class="group-hover:text-accent transition-colors">#{tag}</span>
+                ))}
+              </p>
+            )}
           </a>
-        ))}
-      </div>
-    </div>
+          <time datetime={post.data.pubDate.toISOString()} class="font-mono text-xs text-faint shrink-0">
+            {pubDate}
+          </time>
+        </article>
+      );
+    })}
   </div>
 </BaseLayout>

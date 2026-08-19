@@ -56,15 +56,14 @@ const jsonLd = JSON.stringify({
 
 <BaseLayout title={post.data.title} description={post.data.description} image={post.data.cover} jsonLd={jsonLd}>
   <div class="container py-12 sm:py-16">
-    <div class="max-w-[56rem] mx-auto">
-      <!-- Back -->
-      <a href="/blog" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors">
-        ← 返回博客
-      </a>
+    <!-- Back -->
+    <a href="/blog" class="font-mono text-xs uppercase tracking-[0.15em] text-faint hover:text-accent transition-colors">
+      ← 返回博客
+    </a>
 
-      <!-- Article header -->
-      <article>
-        <header class="mt-10 mb-12">
+    <!-- Article -->
+    <article class="mt-8">
+      <header class="mb-12">
           {post.data.category && (
             <a
               href={`/tags/${encodeURIComponent(post.data.category)}`}
@@ -143,8 +142,7 @@ const jsonLd = JSON.stringify({
         )}
       </nav>
 
-       {/* 评论 */}
-       <Comments pageOnly />
-    </div>
+        {/* 评论 */}
+        <Comments pageOnly />
   </div>
 </BaseLayout>
